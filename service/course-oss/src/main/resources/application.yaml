@@ -1,0 +1,21 @@
+aliyun:
+  oss:
+    accessKey: LTAI4GGpaNKgzaBmrpsJiLEN
+    accessKeySecret: Pged7WnzYpRSCVE3XRafmnjzBdbljA
+    endpoint: oss-cn-beijing.aliyuncs.com
+    bucketName: 'edu-stream001'
+
+
+server:
+  port: 8002
+  servlet:
+    context-path: /ossservice
+
+spring:
+  profiles:
+    active: dev
+
+  servlet:
+    multipart:
+      max-file-size: 10MB
+      max-request-size: 100MB

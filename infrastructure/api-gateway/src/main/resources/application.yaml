@@ -1,0 +1,15 @@
+server:
+  port: 8888
+spring:
+  application:
+    name: service-gateway
+  cloud:
+    gateway:
+      routes:
+        - id: zl-course
+          uri: lb://
+          predicates:
+            - Path=
+      discovery:
+        locator:
+          enabled: true

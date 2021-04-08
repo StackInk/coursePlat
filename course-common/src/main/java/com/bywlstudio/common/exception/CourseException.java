@@ -8,10 +8,12 @@ package com.bywlstudio.common.exception;
 
 public class CourseException extends Exception{
     private String message ;
+    private int code ;
 
-    public CourseException(String message) {
-        super();
+    public CourseException(String message,int code) {
+        super(message);
         this.message = message;
+        this.code = code;
     }
 
 }

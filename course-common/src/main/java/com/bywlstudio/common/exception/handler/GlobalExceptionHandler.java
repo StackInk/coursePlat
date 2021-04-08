@@ -1,8 +1,10 @@
 package com.bywlstudio.common.exception.handler;
 
+import com.bywlstudio.common.constant.CourseCode;
 import com.bywlstudio.common.exception.CourseException;
 import com.bywlstudio.common.util.R;
 import lombok.extern.slf4j.Slf4j;
+import org.apache.tomcat.util.http.fileupload.FileUploadException;
 import org.springframework.web.bind.MethodArgumentNotValidException;
 import org.springframework.web.bind.annotation.ExceptionHandler;
 import org.springframework.web.bind.annotation.RestControllerAdvice;
@@ -26,7 +28,12 @@ public class GlobalExceptionHandler {
 
     @ExceptionHandler({MethodArgumentNotValidException.class, ConstraintViolationException.class})
     public R methodArgumentNotValidException(MethodArgumentNotValidException e,ConstraintViolationException e1) {
-        return R.error().data("error",e.getMessage());
+        return R.error().data("error",CourseCode.ArgError.getMessage()).code(CourseCode.ArgError.getCode());
+    }
+
+    @ExceptionHandler(FileUploadException.class)
+    public R fileUploadException(FileUploadException e) {
+        return R.error().data("error",CourseCode.FileNotFound.getMessage()).code(CourseCode.FileNotFound.getCode());
     }
 
 

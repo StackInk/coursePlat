@@ -14,11 +14,19 @@
     <modules>
         <module>course-interface</module>
         <module>course-cache</module>
-        <module>cource-oss</module>
+        <module>course-oss</module>
         <module>course-course</module>
         <module>course-member</module>
         <module>course-platform</module>
     </modules>
+
+    <dependencies>
+        <dependency>
+            <groupId>com.bywlstudio</groupId>
+            <artifactId>course-common</artifactId>
+        </dependency>
+
+    </dependencies>
 
 
 </project>
