@@ -1,0 +1,12 @@
+
+swagger:
+  base-path: /**
+  base-package: 'com.bywlstudio'
+  title: '选课中心 API 文档'
+  description: '基于Swagger构建的 API 文档'
+  version: '1.0'
+  contact:
+    name: '执墨'
+    url: 'https://www.github.com/StackInk'
+    email: 'onlyzuolei@gmail.com'
+
