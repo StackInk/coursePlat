@@ -52,6 +52,7 @@ CREATE TABLE `acl_user` (
   `wx_secret_key` varchar(20) NOT NULL DEFAULT '' COMMENT '微信用户密钥，后续扩展',
   `nick_name` varchar(50) DEFAULT NULL COMMENT '昵称',
   `avatar` varchar(255) DEFAULT NULL COMMENT '用户头像',
+  `enable` tinyint(1) unsigned NOT NULL DEFAULT 0 COMMENT '账户是否被禁用(0为未禁用，1为被禁用)',
   `is_deleted` tinyint(1) unsigned NOT NULL DEFAULT 0 COMMENT '逻辑删除 1（true）已删除， 0（false）未删除',
   `gmt_create` datetime NOT NULL COMMENT '创建时间',
   `gmt_modified` datetime NOT NULL COMMENT '更新时间',

@@ -19,6 +19,7 @@
         <module>course-common</module>
         <module>infrastructure</module>
         <module>service</module>
+        <module>spring-security</module>
     </modules>
 
     <properties>
@@ -42,6 +43,7 @@
         <commons-pool2.version>2.6.0</commons-pool2.version>
         <guava.version>30.1-jre</guava.version>
         <course.version>1.0-SNAPSHOT</course.version>
+        <mysql.version>8.0.22</mysql.version>
     </properties>
 
 
@@ -59,6 +61,14 @@
             <dependency>
                 <groupId>org.springframework.boot</groupId>
                 <artifactId>spring-boot-starter-web</artifactId>
+                <type>pom</type>
+                <scope>import</scope>
+                <version>${spring-boot.version}</version>
+            </dependency>
+
+            <dependency>
+                <groupId>org.springframework.boot</groupId>
+                <artifactId>spring-boot-starter-test</artifactId>
                 <type>pom</type>
                 <scope>import</scope>
                 <version>${spring-boot.version}</version>
@@ -83,6 +93,12 @@
                 <groupId>org.apache.velocity</groupId>
                 <artifactId>velocity-engine-core</artifactId>
                 <version>${velocity.version}</version>
+            </dependency>
+
+            <dependency>
+                <groupId>mysql</groupId>
+                <artifactId>mysql-connector-java</artifactId>
+                <version>${mysql.version}</version>
             </dependency>
 
             <dependency>

@@ -1,0 +1,10 @@
+server:
+  servlet:
+    context-path: /memberService
+  port: 8001
+mybatis-plus:
+  configuration:
+    environment:
+spring:
+  profiles:
+    active: dev

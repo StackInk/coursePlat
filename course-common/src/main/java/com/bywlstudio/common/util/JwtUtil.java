@@ -20,7 +20,7 @@ public class JwtUtil {
     public static final String APP_SECRET = "ukc8BDbRigUDaY6pZFfWus2jZWLPHO"; //秘钥
 
     //生成token字符串的方法
-    public static String getJwtToken(String id, String nickname){
+    public static String getJwtToken(String username){
 
         String JwtToken = Jwts.builder()
                 .setHeaderParam("typ", "JWT")
@@ -30,8 +30,7 @@ public class JwtUtil {
                 .setIssuedAt(new Date())
                 .setExpiration(new Date(System.currentTimeMillis() + EXPIRE))
 
-                .claim("id", id)  //设置token主体部分 ，存储用户信息
-                .claim("nickname", nickname)
+                .claim("username", username)
 
                 .signWith(SignatureAlgorithm.HS256, APP_SECRET)
                 .compact();
@@ -85,7 +84,7 @@ public class JwtUtil {
     }
 
     /**
-     * 根据token字符串获取用户id
+     * 根据请求获取用户信息
      * @param request
      * @return
      */
@@ -98,7 +97,23 @@ public class JwtUtil {
         }catch (Exception e) {
             e.printStackTrace();
         }
-        return (String)claims.get("id");
+        return (String)claims.get("username");
+    }
+
+
+    /**
+     * 根据token字符串获取用户id
+     * @param token
+     * @return
+     */
+    public static String getMemberIdByJwtToken(String token) {
+        Claims claims = null ;
+        try {
+            claims = getClaimsFromToken(token);
+        }catch (Exception e) {
+            e.printStackTrace();
+        }
+        return (String)claims.get("username");
     }
 
     /**

@@ -27,6 +27,11 @@
             <groupId>com.google.code.gson</groupId>
             <artifactId>gson</artifactId>
         </dependency>
+
+        <dependency>
+            <groupId>com.bywlstudio</groupId>
+            <artifactId>course-common</artifactId>
+        </dependency>
     </dependencies>
 
 </project>
