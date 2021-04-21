@@ -17,6 +17,9 @@ public class User implements Serializable {
 
     private static final long serialVersionUID = 1L;
 
+    @ApiModelProperty(value = "主键ID")
+    private Long id;
+
     @ApiModelProperty(value = "用户名")
     private String username;
 
@@ -27,7 +30,7 @@ public class User implements Serializable {
     private String nickName;
 
     @ApiModelProperty(value = "用户头像")
-    private String salt;
+    private String avatar;
 
     @ApiModelProperty(value = "用户签名")
     private String token;

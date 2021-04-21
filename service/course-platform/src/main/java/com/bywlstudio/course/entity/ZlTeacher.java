@@ -4,11 +4,15 @@ import com.baomidou.mybatisplus.annotation.IdType;
 import java.util.Date;
 import com.baomidou.mybatisplus.annotation.TableId;
 import java.io.Serializable;
+
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import io.swagger.annotations.ApiModel;
 import io.swagger.annotations.ApiModelProperty;
 import lombok.Data;
 import lombok.EqualsAndHashCode;
 import lombok.experimental.Accessors;
+
+import javax.validation.constraints.NotNull;
 
 /**
  * <p>
@@ -31,24 +35,31 @@ public class ZlTeacher implements Serializable {
     private Long id;
 
     @ApiModelProperty(value = "账户ID")
+    @NotNull
     private Long uid;
 
     @ApiModelProperty(value = "教师姓名")
+    @NotNull
     private String name;
 
     @ApiModelProperty(value = "教师简介")
+    @NotNull
     private String description;
 
     @ApiModelProperty(value = "教师职称")
+    @NotNull
     private Boolean rank;
 
     @ApiModelProperty(value = "逻辑删除 1（true）已删除， 0（false）未删除")
+    @JsonIgnore
     private Boolean isDeleted;
 
     @ApiModelProperty(value = "创建时间")
+    @JsonIgnore
     private Date gmtCreate;
 
     @ApiModelProperty(value = "更新时间")
+    @JsonIgnore
     private Date gmtModified;
 
 

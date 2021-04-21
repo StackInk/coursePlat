@@ -5,16 +5,16 @@ import com.bywlstudio.common.util.R;
 import com.bywlstudio.member.entity.AclUser;
 import com.bywlstudio.member.service.IAclUserRoleService;
 import com.bywlstudio.member.service.IAclUserService;
+import com.bywlstudio.security.entity.User;
+import io.swagger.annotations.Api;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.core.env.Environment;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RequestBody;
-import org.springframework.web.bind.annotation.RequestMapping;
-
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.security.core.context.SecurityContextHolder;
+import org.springframework.web.bind.annotation.*;
 
 import javax.annotation.Resource;
+import java.util.Map;
 
 /**
  * <p>
@@ -26,29 +26,23 @@ import javax.annotation.Resource;
  */
 @RestController
 @RequestMapping("/acl-user")
+@Api("用户信息接口")
 @Slf4j
 public class AclUserController {
 
     @Resource
     private IAclUserService aclUserService;
 
-    @Resource
-    private Environment environment ;
 
-    private String env;
-
-    {
-        String[] activeProfiles = environment.getActiveProfiles();
-        if (activeProfiles.length==1) {
-            env = activeProfiles[0];
-        }
+    @GetMapping
+    public R info() {
+        String username = SecurityContextHolder.getContext().getAuthentication().getName();
+        Map<String,Object> result = aclUserService.getUserInfo(username);
+        return R.ok().data("info",result);
     }
 
-    @PostMapping
-    public R login(@RequestBody AclUser user) {
 
-        return R.ok();
-    }
+
 
 
 

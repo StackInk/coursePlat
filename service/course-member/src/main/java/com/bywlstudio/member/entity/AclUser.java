@@ -4,6 +4,8 @@ import com.baomidou.mybatisplus.annotation.IdType;
 import java.util.Date;
 import com.baomidou.mybatisplus.annotation.TableId;
 import java.io.Serializable;
+
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import io.swagger.annotations.ApiModel;
 import io.swagger.annotations.ApiModelProperty;
 import lombok.Data;
@@ -37,9 +39,11 @@ public class AclUser implements Serializable {
     private String password;
 
     @ApiModelProperty(value = "微信OpenId，后续扩展")
+    @JsonIgnore
     private String wxOpenId;
 
     @ApiModelProperty(value = "微信用户密钥，后续扩展")
+    @JsonIgnore
     private String wxSecretKey;
 
     @ApiModelProperty(value = "昵称")
@@ -49,13 +53,19 @@ public class AclUser implements Serializable {
     private String avatar;
 
     @ApiModelProperty(value = "逻辑删除 1（true）已删除， 0（false）未删除")
+    @JsonIgnore
     private Boolean isDeleted;
 
     @ApiModelProperty(value = "创建时间")
+    @JsonIgnore
     private Date gmtCreate;
 
     @ApiModelProperty(value = "更新时间")
+    @JsonIgnore
     private Date gmtModified;
+
+    @ApiModelProperty(value = "账户是否被禁用")
+    private Integer enable;
 
 
 }

@@ -166,6 +166,8 @@
                 <version>${gson.version}</version>
             </dependency>
 
+
+
             <!-- JWT -->
             <dependency>
                 <groupId>io.jsonwebtoken</groupId>
@@ -181,6 +183,12 @@
             <dependency>
                 <groupId>com.bywlstudio</groupId>
                 <artifactId>course-common</artifactId>
+                <version>${course.version}</version>
+            </dependency>
+
+            <dependency>
+                <groupId>com.bywlstudio</groupId>
+                <artifactId>spring-security</artifactId>
                 <version>${course.version}</version>
             </dependency>
 

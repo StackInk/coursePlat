@@ -1,11 +1,15 @@
 package com.bywlstudio.security.filter;
 
 import com.bywlstudio.common.util.JwtUtil;
+import com.bywlstudio.common.util.R;
+import com.bywlstudio.common.util.ResponseUtil;
 import org.springframework.data.redis.core.RedisTemplate;
 import org.springframework.security.authentication.AuthenticationManager;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
 import org.springframework.security.core.GrantedAuthority;
 import org.springframework.security.core.authority.SimpleGrantedAuthority;
+import org.springframework.security.core.context.SecurityContext;
+import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.security.web.AuthenticationEntryPoint;
 import org.springframework.security.web.authentication.www.BasicAuthenticationFilter;
 import org.springframework.stereotype.Component;
@@ -20,6 +24,7 @@ import java.io.IOException;
 import java.util.ArrayList;
 import java.util.Collection;
 import java.util.List;
+import java.util.Objects;
 
 /**
  * @Author: zl
@@ -40,6 +45,7 @@ public class TokenAuthenticationFilter extends BasicAuthenticationFilter {
 
     /**
      * 处理所有的请求，属于一个过滤器链
+     *  判断当前请求是否需要进行登陆操作，如果需要则，将用户信息封装为一个UsernamePasswordToken对象
      * @param request
      * @param response
      * @param chain
@@ -49,11 +55,21 @@ public class TokenAuthenticationFilter extends BasicAuthenticationFilter {
     @Override
     protected void doFilterInternal(HttpServletRequest request, HttpServletResponse response, FilterChain chain) throws IOException, ServletException {
 
+        logger.info("开始处理请求");
+        if (!request.getRequestURI().contains("admin")) {
+            chain.doFilter(request,response);
+        }
 
+        UsernamePasswordAuthenticationToken authenticationToken = getAuthentication(request);
 
+        if(Objects.isNull(authenticationToken)) {
+            ResponseUtil.out(response,R.error());
+            return ;
+        }
+        //设置全局认证对象
+        SecurityContextHolder.getContext().setAuthentication(authenticationToken);
 
-
-
+        chain.doFilter(request,response);
     }
 
 

@@ -45,5 +45,8 @@ public class AclUserRole implements Serializable {
     @ApiModelProperty(value = "更新时间")
     private Date gmtModified;
 
-
+    public AclUserRole(Long roleId, Long userId) {
+        this.roleId = roleId;
+        this.userId = userId;
+    }
 }

@@ -45,5 +45,8 @@ public class AclRolePermission implements Serializable {
     @ApiModelProperty(value = "更新时间")
     private Date gmtModified;
 
-
+    public AclRolePermission(Long roleId, Long permissionId) {
+        this.roleId = roleId;
+        this.permissionId = permissionId;
+    }
 }

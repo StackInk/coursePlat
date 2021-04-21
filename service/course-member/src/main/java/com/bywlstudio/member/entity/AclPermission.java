@@ -2,8 +2,12 @@ package com.bywlstudio.member.entity;
 
 import com.baomidou.mybatisplus.annotation.IdType;
 import java.util.Date;
+
+import com.baomidou.mybatisplus.annotation.TableField;
 import com.baomidou.mybatisplus.annotation.TableId;
 import java.io.Serializable;
+import java.util.List;
+
 import io.swagger.annotations.ApiModel;
 import io.swagger.annotations.ApiModelProperty;
 import lombok.Data;
@@ -50,6 +54,19 @@ public class AclPermission implements Serializable {
 
     @ApiModelProperty(value = "图标")
     private String icon;
+
+
+    @ApiModelProperty(value = "层级")
+    @TableField(exist = false)
+    private Integer level;
+
+    @ApiModelProperty(value = "下级")
+    @TableField(exist = false)
+    private List<AclPermission> children;
+
+    @ApiModelProperty(value = "是否选中")
+    @TableField(exist = false)
+    private boolean isSelect;
 
     @ApiModelProperty(value = "状态(0:禁止,1:正常)")
     private Integer status;

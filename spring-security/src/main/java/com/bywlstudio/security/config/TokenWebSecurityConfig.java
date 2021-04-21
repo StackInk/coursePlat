@@ -60,11 +60,12 @@ public class TokenWebSecurityConfig extends WebSecurityConfigurerAdapter {
                 .authorizeRequests()
                     .anyRequest().authenticated()
                 .and()
-                    .logout().logoutUrl("/acl/index.logout")
+                    .logout().logoutUrl("/acl/admin/index/logout")
                     .addLogoutHandler(new TokenLogoutHandler())
                 .and()
-                    .addFilter(new TokenLoginFilter(authenticationManager(),redisTemplate))
-                    .addFilter(new TokenAuthenticationFilter(authenticationManager(),redisTemplate));
+                    .addFilter(new TokenAuthenticationFilter(authenticationManager(),redisTemplate))
+                    .addFilter(new TokenLoginFilter(authenticationManager(),redisTemplate));
+
     }
 
     /**
