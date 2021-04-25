@@ -1,11 +1,11 @@
 package com.bywlstudio.gateway.filter;
 
 import com.bywlstudio.common.util.JwtUtil;
-import com.google.gson.JsonObject;
+import com.bywlstudio.common.util.R;
+import com.bywlstudio.common.util.ResponseUtil;
 import org.springframework.cloud.gateway.filter.GatewayFilterChain;
 import org.springframework.cloud.gateway.filter.GlobalFilter;
 import org.springframework.core.Ordered;
-import org.springframework.core.io.buffer.DataBuffer;
 import org.springframework.http.server.reactive.ServerHttpRequest;
 import org.springframework.http.server.reactive.ServerHttpResponse;
 import org.springframework.stereotype.Component;
@@ -13,8 +13,8 @@ import org.springframework.util.AntPathMatcher;
 import org.springframework.web.server.ServerWebExchange;
 import reactor.core.publisher.Mono;
 
-import java.nio.charset.StandardCharsets;
 import java.util.List;
+import java.util.Objects;
 
 /**
  * @Author: zl
@@ -31,23 +31,23 @@ public class AuthGlobalFilter implements GlobalFilter, Ordered {
         ServerHttpRequest request = exchange.getRequest();
         String path = request.getURI().getPath();
         //对用户操作进行鉴权，判断是否登陆
-        if(antPathMatcher.match("/api/**/auth/**", path)) {
+        if(antPathMatcher.match("/**/auth/**", path)) {
             List<String> tokenList = request.getHeaders().get("token");
-            if(null == tokenList) {
+            if(Objects.isNull(tokenList)) {
                 ServerHttpResponse response = exchange.getResponse();
-                return out(response);
+                return ResponseUtil.fluxOut(response,R.error().data("message","用户未登陆"));
             } else {
                 Boolean isCheck = JwtUtil.checkToken(tokenList.get(0));
                 if(!isCheck) {
                     ServerHttpResponse response = exchange.getResponse();
-                    return out(response);
+                    return ResponseUtil.fluxOut(response,R.error().data("message","token过期"));
                 }
             }
         }
         //内部服务接口，不允许外部访问
         if(antPathMatcher.match("/**/inner/**", path)) {
             ServerHttpResponse response = exchange.getResponse();
-            return out(response);
+            return ResponseUtil.fluxOut(response, R.error().data("message","接口不允许访问"));
         }
         return chain.filter(exchange);
     }
@@ -55,17 +55,5 @@ public class AuthGlobalFilter implements GlobalFilter, Ordered {
     @Override
     public int getOrder() {
         return 0;
-    }
-
-    private Mono<Void> out(ServerHttpResponse response) {
-        JsonObject message = new JsonObject();
-        message.addProperty("code", 20003);
-        message.addProperty("data", "鉴权失败");
-        byte[] bits = message.toString().getBytes(StandardCharsets.UTF_8);
-        DataBuffer buffer = response.bufferFactory().wrap(bits);
-        //response.setStatusCode(HttpStatus.UNAUTHORIZED);
-        //指定编码，否则在浏览器中会中文乱码
-        response.getHeaders().add("Content-Type", "application/json;charset=UTF-8");
-        return response.writeWith(Mono.just(buffer));
     }
 }

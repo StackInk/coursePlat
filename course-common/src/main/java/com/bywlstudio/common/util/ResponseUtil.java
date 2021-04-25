@@ -1,11 +1,17 @@
 package com.bywlstudio.common.util;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
+import com.google.gson.Gson;
+import com.google.gson.JsonObject;
+import org.springframework.core.io.buffer.DataBuffer;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.MediaType;
+import org.springframework.http.server.reactive.ServerHttpResponse;
+import reactor.core.publisher.Mono;
 
 import javax.servlet.http.HttpServletResponse;
 import java.io.IOException;
+import java.nio.charset.StandardCharsets;
 
 /**
  * @Author: zl
@@ -23,6 +29,13 @@ public class ResponseUtil {
         } catch (IOException e) {
             e.printStackTrace();
         }
+    }
+
+    public static Mono<Void> fluxOut(ServerHttpResponse response,R r) {
+        Gson gson = new Gson();
+        DataBuffer buffer = response.bufferFactory().wrap(gson.toJson(r).getBytes(StandardCharsets.UTF_8));
+        response.getHeaders().add("Content-Type", "application/json;charset=UTF-8");
+        return response.writeWith(Mono.just(buffer));
     }
 
 }

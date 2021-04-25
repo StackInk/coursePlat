@@ -1,7 +1,7 @@
 server:
-  port: 8001
+  port: 8003
   servlet:
-    context-path: /courseService
+    context-path: /courseservice
 
 spring:
   application:
@@ -16,6 +16,13 @@ spring:
   jackson:
     date-format: yyyy-MM-dd HH:mm:ss
     time-zone: GMT+8
+  redis:
+    database: 0
+    host: locahost
+    port: 6379
+    lettuce:
+      pool:
+        min-idle: 3
 
 mybatis-plus:
   configuration:

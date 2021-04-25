@@ -15,7 +15,6 @@
         <module>course-interface</module>
         <module>course-cache</module>
         <module>course-oss</module>
-        <module>course-course</module>
         <module>course-member</module>
         <module>course-platform</module>
     </modules>

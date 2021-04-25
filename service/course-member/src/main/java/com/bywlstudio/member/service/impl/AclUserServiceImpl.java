@@ -3,14 +3,15 @@ package com.bywlstudio.member.service.impl;
 import com.baomidou.mybatisplus.core.conditions.Wrapper;
 import com.baomidou.mybatisplus.core.conditions.query.QueryWrapper;
 import com.bywlstudio.common.util.JwtUtil;
-import com.bywlstudio.member.entity.AclPermission;
-import com.bywlstudio.member.entity.AclRole;
-import com.bywlstudio.member.entity.AclUser;
-import com.bywlstudio.member.entity.AclUserRole;
+import com.bywlstudio.member.entity.*;
 import com.bywlstudio.member.mapper.AclUserMapper;
 import com.bywlstudio.member.service.*;
 import com.baomidou.mybatisplus.extension.service.impl.ServiceImpl;
+import com.bywlstudio.member.util.MenuUtils;
+import com.bywlstudio.member.util.UserUtils;
 import com.bywlstudio.security.entity.User;
+import com.google.gson.JsonArray;
+import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.BeanUtils;
 import org.springframework.data.redis.core.RedisTemplate;
 import org.springframework.stereotype.Service;
@@ -29,17 +30,24 @@ import java.util.stream.Collectors;
  * @author StackInk
  * @since 2021-04-08
  */
-@Service
+@Service("userService")
+@Slf4j
 public class AclUserServiceImpl extends ServiceImpl<AclUserMapper, AclUser> implements IAclUserService {
 
     @Resource
     private IAclRoleService roleService;
 
     @Resource
+    private IAclUserRoleService userRoleService;
+
+    @Resource
     private IAclPermissionService permissionService;
 
     @Resource
     private RedisTemplate<String,Object> redisTemplate;
+
+    @Resource
+    private IZlStudentService studentService;
 
     /**
      * 根据用户名获取用户信息
@@ -63,26 +71,43 @@ public class AclUserServiceImpl extends ServiceImpl<AclUserMapper, AclUser> impl
         AclUser aclUser = this.getUserByUsername(username);
         //获取当前用户所有的角色信息
         List<AclRole> roles = roleService.getRolesByUserId(aclUser.getId());
-        List<Long> roleIds = roles.stream().map(role -> role.getId()).collect(Collectors.toList());
 
         //获取当前用户所有的权限信息
-        List<AclPermission> permissions = permissionService.getPermissionByRoleIds(roleIds);
-        List<String> permissionIds = permissions.stream().map(permission -> permission.getName()).collect(Collectors.toList());
+        List<String> permissions = permissionService.getPermissionValueByUserId(aclUser.getId());
 
         //权限信息
-        redisTemplate.opsForValue().set(aclUser.getId().toString(),permissionIds);
+        redisTemplate.opsForValue().set(aclUser.getId().toString(),permissions);
 
         Map<String,Object> map = new HashMap<>();
-
+        map.put("id",aclUser.getId());
         map.put("name", aclUser.getUsername());
         map.put("avatar", aclUser.getAvatar());
         map.put("roles", roles);
         map.put("permissionValueList", permissions);
-
+        log.info("获取当前用户权限信息,{}",map);
         return map;
 
     }
 
+    @Override
+    public JsonArray getMenu(String username) {
+        AclPermission menus = null ;
+        if(UserUtils.isAdmin(username)) {
+            menus = permissionService.getMenus();
+        }else {
+            menus = permissionService.getMenuByUsername(username);
+        }
 
+        return MenuUtils.build(menus);
+    }
 
+    @Override
+    public void deleteUser(Long userId) {
+        //删除当前用户
+        baseMapper.deleteById(userId);
+        //删除当前用户对应的角色信息
+        userRoleService.remove(new QueryWrapper<AclUserRole>().eq("user_id",userId));
+        //删除当前用户对应的身份详细信息
+        studentService.remove(new QueryWrapper<ZlStudent>().eq("uid",userId));
+    }
 }

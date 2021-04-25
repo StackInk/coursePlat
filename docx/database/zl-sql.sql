@@ -47,10 +47,9 @@ CREATE TABLE `acl_role_permission` (
 CREATE TABLE `acl_user` (
   `id` BIGINT UNSIGNED NOT NULL AUTO_INCREMENT COMMENT '主键ID',
   `username` varchar(20) NOT NULL DEFAULT '' COMMENT '用户名',
-  `password` varchar(32) NOT NULL DEFAULT '' COMMENT '密码',
+  `password` varchar(50) NOT NULL DEFAULT '' COMMENT '密码',
   `wx_open_id` varchar(20) NOT NULL DEFAULT '' COMMENT '微信OpenId，后续扩展',
   `wx_secret_key` varchar(20) NOT NULL DEFAULT '' COMMENT '微信用户密钥，后续扩展',
-  `nick_name` varchar(50) DEFAULT NULL COMMENT '昵称',
   `avatar` varchar(255) DEFAULT NULL COMMENT '用户头像',
   `enable` tinyint(1) unsigned NOT NULL DEFAULT 0 COMMENT '账户是否被禁用(0为未禁用，1为被禁用)',
   `is_deleted` tinyint(1) unsigned NOT NULL DEFAULT 0 COMMENT '逻辑删除 1（true）已删除， 0（false）未删除',

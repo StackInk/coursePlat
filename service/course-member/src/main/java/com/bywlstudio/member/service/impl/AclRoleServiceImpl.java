@@ -24,7 +24,7 @@ import java.util.stream.Collectors;
  * @author StackInk
  * @since 2021-04-08
  */
-@Service
+@Service("roleService")
 public class AclRoleServiceImpl extends ServiceImpl<AclRoleMapper, AclRole> implements IAclRoleService {
 
     @Resource

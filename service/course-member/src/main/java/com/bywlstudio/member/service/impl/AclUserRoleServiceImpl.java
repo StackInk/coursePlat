@@ -14,7 +14,7 @@ import org.springframework.stereotype.Service;
  * @author StackInk
  * @since 2021-04-08
  */
-@Service
+@Service("userRoleService")
 public class AclUserRoleServiceImpl extends ServiceImpl<AclUserRoleMapper, AclUserRole> implements IAclUserRoleService {
 
 }

@@ -35,7 +35,7 @@ public class TokenLogoutHandler implements LogoutHandler {
      */
     @Override
     public void logout(HttpServletRequest httpServletRequest, HttpServletResponse httpServletResponse, Authentication authentication) {
-        String userId = JwtUtil.getMemberIdByJwtToken(httpServletRequest);
+        String userId = JwtUtil.getMemberIdByJwtToken(httpServletRequest.getHeader("token"));
         redisTemplate.unlink(userId);
         log.info("{}用户注销成功",userId);
         ResponseUtil.out(httpServletResponse, R.ok().data("message","注销成功"));

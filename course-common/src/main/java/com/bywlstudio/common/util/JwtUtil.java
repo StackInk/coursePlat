@@ -5,7 +5,6 @@ import lombok.extern.slf4j.Slf4j;
 import org.springframework.util.StringUtils;
 
 import javax.servlet.http.HttpServletRequest;
-import java.time.LocalDateTime;
 import java.util.Date;
 
 /**
@@ -44,25 +43,10 @@ public class JwtUtil {
      * @return
      */
     public static boolean checkToken(String jwtToken) {
-        if(StringUtils.isEmpty(jwtToken)) return false;
-        try {
-            Jwts.parser().setSigningKey(APP_SECRET).parseClaimsJws(jwtToken);
-        } catch (Exception e) {
-            e.printStackTrace();
+        if(StringUtils.isEmpty(jwtToken)) {
             return false;
         }
-        return true;
-    }
-
-    /**
-     * 判断token是否存在与有效
-     * @param request
-     * @return
-     */
-    public static boolean checkToken(HttpServletRequest request) {
         try {
-            String jwtToken = request.getHeader("token");
-            if(StringUtils.isEmpty(jwtToken)) return false;
             Jwts.parser().setSigningKey(APP_SECRET).parseClaimsJws(jwtToken);
         } catch (Exception e) {
             e.printStackTrace();
@@ -76,28 +60,11 @@ public class JwtUtil {
     private static Claims getClaimsFromToken(String token){
         Claims claims;
         try {
-            claims = Jwts.parser().setSigningKey(APP_SECRET).parseClaimsJwt(token).getBody();
+            claims = Jwts.parser().setSigningKey(APP_SECRET).parseClaimsJws(token).getBody();
         }catch(ExpiredJwtException e){
             claims= e.getClaims();
         }
         return claims;
-    }
-
-    /**
-     * 根据请求获取用户信息
-     * @param request
-     * @return
-     */
-    public static String getMemberIdByJwtToken(HttpServletRequest request) {
-        String jwtToken = request.getHeader("token");
-        if(StringUtils.isEmpty(jwtToken)) return "";
-        Claims claims = null ;
-        try {
-            claims = getClaimsFromToken(jwtToken);
-        }catch (Exception e) {
-            e.printStackTrace();
-        }
-        return (String)claims.get("username");
     }
 
 

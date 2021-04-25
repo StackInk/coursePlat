@@ -4,11 +4,13 @@ import com.baomidou.mybatisplus.core.conditions.query.QueryWrapper;
 import com.bywlstudio.member.entity.AclPermission;
 import com.bywlstudio.member.entity.AclRole;
 import com.bywlstudio.member.entity.AclRolePermission;
+import com.bywlstudio.member.entity.AclUser;
 import com.bywlstudio.member.mapper.AclPermissionMapper;
 import com.bywlstudio.member.service.IAclPermissionService;
 import com.baomidou.mybatisplus.extension.service.impl.ServiceImpl;
 import com.bywlstudio.member.service.IAclRolePermissionService;
 import com.bywlstudio.member.service.IAclRoleService;
+import com.bywlstudio.member.service.IAclUserService;
 import com.bywlstudio.member.util.PermissionUtils;
 import lombok.val;
 import org.springframework.stereotype.Service;
@@ -17,6 +19,7 @@ import javax.annotation.Resource;
 import java.awt.*;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Set;
 import java.util.stream.Collectors;
 
 /**
@@ -27,7 +30,7 @@ import java.util.stream.Collectors;
  * @author StackInk
  * @since 2021-04-08
  */
-@Service
+@Service("permissionService")
 public class AclPermissionServiceImpl extends ServiceImpl<AclPermissionMapper, AclPermission> implements IAclPermissionService {
 
     @Resource
@@ -35,6 +38,9 @@ public class AclPermissionServiceImpl extends ServiceImpl<AclPermissionMapper, A
 
     @Resource
     private IAclRoleService roleService;
+
+    @Resource
+    private IAclUserService userService;
 
 
     /**
@@ -66,6 +72,7 @@ public class AclPermissionServiceImpl extends ServiceImpl<AclPermissionMapper, A
      * 获取所有的菜单
      * @return 返回层级已经确定的菜单
      */
+    @Override
     public AclPermission getMenus() {
         List<AclPermission> aclPermissions = baseMapper.selectList(null);
         return PermissionUtils.build(aclPermissions);
@@ -143,6 +150,27 @@ public class AclPermissionServiceImpl extends ServiceImpl<AclPermissionMapper, A
         });
 
         return PermissionUtils.build(list);
+    }
+
+    @Override
+    public AclPermission getMenuByUsername(String username) {
+        AclUser aclUser = userService.getUserByUsername(username);
+        return this.getMenuByUserId(aclUser.getId());
+    }
+
+    @Override
+    public List<String> getPermissionValueByRoleId(Long roleId) {
+        return baseMapper.getPermissionValueByRoleId(roleId);
+    }
+    @Override
+    public List<String> getPermissionValueByUserId(Long userId) {
+        List<AclRole> roleList = roleService.getRolesByUserId(userId);
+        List<Long> roleIds = roleList.stream().map(role -> role.getId()).collect(Collectors.toList());
+        List<String> list = new ArrayList<>();
+        roleIds.forEach(roleId->{
+            list.addAll(this.getPermissionValueByRoleId(roleId));
+        });
+        return list;
     }
 
 

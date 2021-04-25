@@ -38,10 +38,12 @@ import java.io.IOException;
  */
 @EnableWebSecurity
 @EnableGlobalMethodSecurity(prePostEnabled = true)
+@Configuration
 public class TokenWebSecurityConfig extends WebSecurityConfigurerAdapter {
 
     @Resource
     private RedisTemplate<String,Object> redisTemplate ;
+
     @Resource
     private UserDetailsService userDetailsService;
 
@@ -60,11 +62,12 @@ public class TokenWebSecurityConfig extends WebSecurityConfigurerAdapter {
                 .authorizeRequests()
                     .anyRequest().authenticated()
                 .and()
-                    .logout().logoutUrl("/acl/admin/index/logout")
+                    .logout().logoutUrl("/aclservice/user/logout")
                     .addLogoutHandler(new TokenLogoutHandler())
                 .and()
+                    .addFilter(new TokenLoginFilter(authenticationManager(),redisTemplate))
                     .addFilter(new TokenAuthenticationFilter(authenticationManager(),redisTemplate))
-                    .addFilter(new TokenLoginFilter(authenticationManager(),redisTemplate));
+                    .httpBasic();
 
     }
 

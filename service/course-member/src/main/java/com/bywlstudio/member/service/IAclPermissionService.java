@@ -54,6 +54,22 @@ public interface IAclPermissionService extends IService<AclPermission> {
      */
     AclPermission getMenuByUserId(Long userId);
 
+    /**
+     * 根据用户名获取对应的权限信息
+     * @param username
+     * @return
+     */
+    AclPermission getMenuByUsername(String username);
+
+    /**
+     * 根据角色ID获取对应的权限值
+     * @param roleId
+     * @return
+     */
+    List<String> getPermissionValueByRoleId(Long roleId);
+
+    List<String> getPermissionValueByUserId(Long userId);
+
 
 
 }

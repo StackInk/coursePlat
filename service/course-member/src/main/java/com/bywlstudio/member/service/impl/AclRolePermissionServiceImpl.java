@@ -14,7 +14,7 @@ import org.springframework.stereotype.Service;
  * @author StackInk
  * @since 2021-04-08
  */
-@Service
+@Service("rolePermissionService")
 public class AclRolePermissionServiceImpl extends ServiceImpl<AclRolePermissionMapper, AclRolePermission> implements IAclRolePermissionService {
 
 }

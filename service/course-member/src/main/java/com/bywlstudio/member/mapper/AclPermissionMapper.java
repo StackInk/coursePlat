@@ -35,6 +35,9 @@ public interface AclPermissionMapper extends BaseMapper<AclPermission> {
     @Select("select * from acl_permission t1 inner join acl_role_permission t2 on t2.role_id = #{roleId} and t1.id = t2.permission_id where t1.is_deleted = 0 and t2.is_deleted = 0")
     List<AclPermission> getPermissionByRoleId(Long roleId);
 
+    @Select("select t1.permission_value from acl_permission t1 inner join acl_role_permission t2 on t2.role_id = #{roleId} and t1.id = t2.permission_id where t1.is_deleted = 0 and t2.is_deleted = 0")
+    List<String> getPermissionValueByRoleId(Long roleId);
+
 
 
 

@@ -56,7 +56,7 @@ public class TokenAuthenticationFilter extends BasicAuthenticationFilter {
     protected void doFilterInternal(HttpServletRequest request, HttpServletResponse response, FilterChain chain) throws IOException, ServletException {
 
         logger.info("开始处理请求");
-        if (!request.getRequestURI().contains("admin")) {
+        if (!request.getRequestURI().contains("user")) {
             chain.doFilter(request,response);
         }
 
@@ -64,11 +64,10 @@ public class TokenAuthenticationFilter extends BasicAuthenticationFilter {
 
         if(Objects.isNull(authenticationToken)) {
             ResponseUtil.out(response,R.error());
-            return ;
+        }else {
+            //设置全局认证对象
+            SecurityContextHolder.getContext().setAuthentication(authenticationToken);
         }
-        //设置全局认证对象
-        SecurityContextHolder.getContext().setAuthentication(authenticationToken);
-
         chain.doFilter(request,response);
     }
 
@@ -80,9 +79,9 @@ public class TokenAuthenticationFilter extends BasicAuthenticationFilter {
      */
     private UsernamePasswordAuthenticationToken getAuthentication(HttpServletRequest request) {
         String token = request.getHeader("token");
-        if (StringUtils.isEmpty(token)) {
+        if (!StringUtils.isEmpty(token)) {
             String username = JwtUtil.getMemberIdByJwtToken(token);
-            if (StringUtils.isEmpty(username)) return null;
+            if (StringUtils.isEmpty(username)) {return null;}
             List<String> permissionValueList = (List<String>)redisTemplate.opsForValue().get(username);
             Collection<GrantedAuthority> authorities = new ArrayList<>();
             permissionValueList.forEach(permissionValue->{

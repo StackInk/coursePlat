@@ -1,15 +1,26 @@
 server:
-  port: 8888
+  port: 8005
 spring:
   application:
-    name: service-gateway
+    name: SERVICE-GATEWAY
   cloud:
     gateway:
       routes:
-        - id: zl-course
-          uri: lb://
+       # 用户登陆服务和权限服务
+        - id: zl-acl
+          uri: lb://SERVICE-ACL
           predicates:
-            - Path=
+            - Path=/aclservice/**
+        # 课程服务
+        - id: zl-course
+          uri: lb://SERVICE-COURSE
+          predicates:
+            - Path=/courseservice/**
+        # OSS 服务
+        - id: zl-oss
+          uri: lb://SERVICE-OSS
+          predicates:
+            - Path=/ossservice/**
       discovery:
         locator:
           enabled: true
