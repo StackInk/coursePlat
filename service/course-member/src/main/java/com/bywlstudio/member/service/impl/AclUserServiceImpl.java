@@ -12,8 +12,10 @@ import com.bywlstudio.member.util.UserUtils;
 import com.bywlstudio.security.entity.User;
 import com.google.gson.JsonArray;
 import lombok.extern.slf4j.Slf4j;
+import com.alibaba.fastjson.JSONObject;
 import org.springframework.beans.BeanUtils;
 import org.springframework.data.redis.core.RedisTemplate;
+import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 
 import javax.annotation.Resource;
@@ -48,6 +50,9 @@ public class AclUserServiceImpl extends ServiceImpl<AclUserMapper, AclUser> impl
 
     @Resource
     private IZlStudentService studentService;
+
+    @Resource
+    private PasswordEncoder passwordEncoder;
 
     /**
      * 根据用户名获取用户信息
@@ -90,15 +95,29 @@ public class AclUserServiceImpl extends ServiceImpl<AclUserMapper, AclUser> impl
     }
 
     @Override
-    public JsonArray getMenu(String username) {
-        AclPermission menus = null ;
+    public void saveUser(AclUser user) {
+        user.setPassword(passwordEncoder.encode(user.getPassword()));
+        baseMapper.insert(user);
+    }
+
+    @Override
+    public List<JSONObject> getMenuJackson(String username) {
+        List<JSONObject> menus = null;
         if(UserUtils.isAdmin(username)) {
-            menus = permissionService.getMenus();
+            menus = permissionService.getMenuJackson();
+        }
+        return menus;
+    }
+
+    @Override
+    public List<JSONObject> getMenu(String username) {
+        List<JSONObject> menus = null;
+        if(UserUtils.isAdmin(username)) {
+            menus = permissionService.getAllMenus();
         }else {
             menus = permissionService.getMenuByUsername(username);
         }
-
-        return MenuUtils.build(menus);
+        return menus;
     }
 
     @Override
@@ -109,5 +128,12 @@ public class AclUserServiceImpl extends ServiceImpl<AclUserMapper, AclUser> impl
         userRoleService.remove(new QueryWrapper<AclUserRole>().eq("user_id",userId));
         //删除当前用户对应的身份详细信息
         studentService.remove(new QueryWrapper<ZlStudent>().eq("uid",userId));
+    }
+
+    @Override
+    public void deleteUsers(List<Long> userIds) {
+        userIds.forEach(userId->{
+            this.deleteUser(userId);
+        });
     }
 }

@@ -5,7 +5,7 @@
     <el-checkbox-group v-model="checkedCities" @change="handleCheckedCitiesChange">
       <el-checkbox v-for="city in cities" :label="city.id" :key="city.id">{{ city.roleName }}</el-checkbox>
     </el-checkbox-group>
-    </br>
+    <br>
     <el-button :disabled="saveBtnDisabled" type="primary" @click="update">保存</el-button>
 
   </div>

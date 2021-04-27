@@ -54,4 +54,6 @@ public class AclRolePermission implements Serializable {
         this.roleId = roleId;
         this.permissionId = permissionId;
     }
+
+    public AclRolePermission(){}
 }

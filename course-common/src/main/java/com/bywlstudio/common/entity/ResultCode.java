@@ -8,7 +8,7 @@ import lombok.Data;
  * @Description:
  */
 public enum ResultCode {
-    SUCCESS(20000,"成功"),ERROR(200001,"失败");
+    SUCCESS(20000,"SUCCESS"),ERROR(200001,"FAILURE");
 
     private int code;
     private String message;

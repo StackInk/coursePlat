@@ -2,6 +2,8 @@ package com.bywlstudio.member.service;
 
 import com.bywlstudio.member.entity.AclPermission;
 import com.baomidou.mybatisplus.extension.service.IService;
+import com.google.gson.JsonArray;
+import com.alibaba.fastjson.JSONObject;
 
 import java.util.List;
 
@@ -19,25 +21,12 @@ public interface IAclPermissionService extends IService<AclPermission> {
 
     List<AclPermission> getPermissionByRoleIds(List<Long> ids);
 
-    /**
-     * 获取所有的菜单
-     * @return
-     */
-    AclPermission getMenus();
+    List<AclPermission> getMenus();
 
-    /**
-     * 根据角色获取菜单
-     * @param roleId
-     * @return
-     */
-    AclPermission getMenuByRoleId(Long roleId);
+    List<JSONObject> getMenuJackson();
 
+    List<AclPermission> getMenuByRoleId(Long roleId);
 
-    /**
-     * 给角色分配权限
-     * @param roleId
-     * @param permissionIds
-     */
     void setPermissionByRoleId(Long roleId, Long[] permissionIds);
 
     /**
@@ -52,14 +41,14 @@ public interface IAclPermissionService extends IService<AclPermission> {
      * @param userId
      * @return
      */
-    AclPermission getMenuByUserId(Long userId);
+    List<JSONObject> getPermissionByUserId(Long userId);
 
     /**
      * 根据用户名获取对应的权限信息
      * @param username
      * @return
      */
-    AclPermission getMenuByUsername(String username);
+    List<JSONObject> getMenuByUsername(String username);
 
     /**
      * 根据角色ID获取对应的权限值
@@ -70,6 +59,7 @@ public interface IAclPermissionService extends IService<AclPermission> {
 
     List<String> getPermissionValueByUserId(Long userId);
 
+    List<String> getAllPermissionValue();
 
-
+    List<JSONObject> getAllMenus();
 }

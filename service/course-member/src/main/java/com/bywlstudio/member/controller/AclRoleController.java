@@ -5,7 +5,9 @@ import com.baomidou.mybatisplus.core.conditions.query.QueryWrapper;
 import com.baomidou.mybatisplus.core.metadata.IPage;
 import com.baomidou.mybatisplus.extension.plugins.pagination.Page;
 import com.bywlstudio.common.util.R;
+import com.bywlstudio.member.entity.AclPermission;
 import com.bywlstudio.member.entity.AclRole;
+import com.bywlstudio.member.service.IAclPermissionService;
 import com.bywlstudio.member.service.IAclRoleService;
 import io.swagger.annotations.Api;
 import io.swagger.annotations.ApiOperation;
@@ -33,6 +35,9 @@ public class AclRoleController {
     @Autowired
     private IAclRoleService roleService;
 
+    @Resource
+    private IAclPermissionService permissionService;
+
     @GetMapping("/{page}/{limit}")
     @ApiOperation("获取所有的角色进行分页处理")
     public R listRolePage(@ApiParam(name = "当前页",value = "1",required = true) @PathVariable Long page,
@@ -40,8 +45,8 @@ public class AclRoleController {
                           AclRole role) {
         Page<AclRole> roles = new Page<>(page,limit);
         QueryWrapper<AclRole> queryWrapper = null ;
-        if(StringUtils.isEmpty(role.getName())) {
-            queryWrapper =  new QueryWrapper();
+        if(!StringUtils.isEmpty(role.getName())) {
+            queryWrapper =  new QueryWrapper<AclRole>();
             queryWrapper.like("name",role.getName());
         }
         IPage<AclRole> iPage = roleService.page(roles, queryWrapper);
@@ -82,6 +87,20 @@ public class AclRoleController {
     public R deleteRoleIds(List<Long> ids) {
         roleService.removeByIds(ids);
         return R.ok();
+    }
+
+    @PostMapping("/assign")
+    @ApiOperation("根据角色ID给角色分配权限")
+    public R setPermissionByRole(Long roleId, Long[] permissionIds) {
+        permissionService.setPermissionByRoleId(roleId,permissionIds);
+        return R.ok();
+    }
+
+    @GetMapping("/role/{roleId}")
+    @ApiOperation("根据角色Id获取菜单信息")
+    public R getPermissionByRoleId(@PathVariable Long roleId) {
+        List<AclPermission> permissionList = permissionService.getPermissionByRoleId(roleId);
+        return R.ok().data("permissions",permissionList);
     }
 
 

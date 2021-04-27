@@ -2,6 +2,8 @@ server:
   servlet:
     context-path: /aclservice
   port: 8001
+  tomcat:
+    uri-encoding: UTF-8
 spring:
   application:
     name: SERVICE-ACL
@@ -22,6 +24,11 @@ spring:
     nacos:
       discovery:
         server-addr: 127.0.0.1:8848
+  http:
+    encoding:
+      charset: UTF-8
+      enabled: true
+      force: true
 
 mybatis-plus:
   configuration:

@@ -4,11 +4,14 @@
     <!--查询表单-->
     <el-form :inline="true" class="demo-form-inline">
       <el-form-item>
-        <el-input v-model="searchObj.username" placeholder="用户名"/>
+        <el-input v-model="searchObj.username" placeholder="用户名" size="small"/>
       </el-form-item>
-
-      <el-button type="primary" icon="el-icon-search" @click="fetchData()">查询</el-button>
-      <el-button type="default" @click="resetData()">清空</el-button>
+      <el-form-item>
+        <el-button type="primary" icon="el-icon-search" size="small" @click="fetchData()" >查询</el-button>
+      </el-form-item>
+      <el-form-item>
+        <el-button type="default" icon="el-icon-error" size="small" @click="resetData()" >清空</el-button>
+      </el-form-item>
     </el-form>
 
     <!-- 工具条 -->
@@ -64,8 +67,9 @@
       :total="total"
       :page-size="limit"
       :page-sizes="[5, 10, 20, 30, 40, 50, 100]"
-      style="padding: 30px 0; text-align: center;"
+      style="padding: 30px 0; text-align: right;"
       layout="sizes, prev, pager, next, jumper, ->, total, slot"
+      background
       @current-change="fetchData"
       @size-change="changeSize"
     />
@@ -120,7 +124,7 @@ export default {
 
       user.getPageList(this.page, this.limit, this.searchObj).then(
         response => {
-          this.list = response.data.items
+          this.list = response.data.item
           this.total = response.data.total
 
           // 数据加载并绑定成功

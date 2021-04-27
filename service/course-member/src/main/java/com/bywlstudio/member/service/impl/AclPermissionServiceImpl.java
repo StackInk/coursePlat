@@ -11,12 +11,18 @@ import com.baomidou.mybatisplus.extension.service.impl.ServiceImpl;
 import com.bywlstudio.member.service.IAclRolePermissionService;
 import com.bywlstudio.member.service.IAclRoleService;
 import com.bywlstudio.member.service.IAclUserService;
+import com.bywlstudio.member.util.MenuUtils;
 import com.bywlstudio.member.util.PermissionUtils;
+import com.bywlstudio.member.util.UserUtils;
+import com.google.gson.JsonArray;
 import lombok.val;
+import com.alibaba.fastjson.JSONObject;
 import org.springframework.stereotype.Service;
+import springfox.documentation.spring.web.json.Json;
 
 import javax.annotation.Resource;
 import java.awt.*;
+import java.security.acl.Acl;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Set;
@@ -73,9 +79,15 @@ public class AclPermissionServiceImpl extends ServiceImpl<AclPermissionMapper, A
      * @return 返回层级已经确定的菜单
      */
     @Override
-    public AclPermission getMenus() {
-        List<AclPermission> aclPermissions = baseMapper.selectList(null);
-        return PermissionUtils.build(aclPermissions);
+    public List<AclPermission> getMenus() {
+        List<AclPermission> permissions = baseMapper.selectList(null);
+        return PermissionUtils.build(permissions);
+    }
+
+    @Override
+    public List<JSONObject> getMenuJackson() {
+        List<AclPermission> permissions = baseMapper.selectList(null);
+        return MenuUtils.buildCommon(PermissionUtils.build(permissions));
     }
 
     /**
@@ -84,7 +96,7 @@ public class AclPermissionServiceImpl extends ServiceImpl<AclPermissionMapper, A
      * @return
      */
     @Override
-    public AclPermission getMenuByRoleId(Long roleId) {
+    public List<AclPermission> getMenuByRoleId(Long roleId) {
         val permissions = baseMapper.getPermissionByRoleId(roleId);
         return PermissionUtils.build(permissions);
     }
@@ -140,7 +152,23 @@ public class AclPermissionServiceImpl extends ServiceImpl<AclPermissionMapper, A
      * @return
      */
     @Override
-    public AclPermission getMenuByUserId(Long userId) {
+    public List<JSONObject> getPermissionByUserId(Long userId) {
+
+        List<AclPermission> permissions = null ;
+        if(isAdmin(userId)) {
+            permissions = getAllPermission();
+        }else {
+            permissions = getNumPermission(userId);
+        }
+        List<AclPermission> aclPermission = PermissionUtils.build(permissions);
+        return MenuUtils.buildCommon(aclPermission);
+    }
+
+    private List<AclPermission> getAllPermission() {
+        return baseMapper.selectList(null);
+    }
+
+    private List<AclPermission> getNumPermission(Long userId) {
         //获取所有的角色信息
         List<AclRole> roleList = roleService.getRolesByUserId(userId);
         List<AclPermission> list = new ArrayList<>();
@@ -148,29 +176,75 @@ public class AclPermissionServiceImpl extends ServiceImpl<AclPermissionMapper, A
             List<AclPermission> permissions = baseMapper.getPermissionByRoleId(role.getId());
             list.addAll(permissions);
         });
-
-        return PermissionUtils.build(list);
+        return list;
     }
 
+    /**
+     * 根据用户名获取菜单
+     * @param username
+     * @return
+     */
     @Override
-    public AclPermission getMenuByUsername(String username) {
+    public List<JSONObject> getMenuByUsername(String username) {
         AclUser aclUser = userService.getUserByUsername(username);
-        return this.getMenuByUserId(aclUser.getId());
+        return this.getPermissionByUserId(aclUser.getId());
     }
 
+    /**
+     * 根据角色ID获取对应的角色信息
+     * @param roleId
+     * @return
+     */
     @Override
     public List<String> getPermissionValueByRoleId(Long roleId) {
         return baseMapper.getPermissionValueByRoleId(roleId);
     }
+
+    /**
+     * 获取所有的菜单信息
+     * @return
+     */
+    @Override
+    public List<String> getAllPermissionValue() {
+        List<AclPermission> selectList = baseMapper.selectList(new QueryWrapper<AclPermission>().eq("type", 2).select("permission_value"));
+        return selectList.stream().map(AclPermission::getPermissionValue).collect(Collectors.toList());
+    }
+
+    @Override
+    public List<JSONObject> getAllMenus() {
+        List<AclPermission> permissions = baseMapper.selectList(null);
+        return MenuUtils.buildCommon(PermissionUtils.build(permissions));
+    }
+
+    /**
+     * 获取权限的值
+     * @param userId
+     * @return
+     */
     @Override
     public List<String> getPermissionValueByUserId(Long userId) {
+        List<String> permissionList = null ;
+        if(isAdmin(userId)) {
+            permissionList = getAllPermissionValue();
+        }else {
+            permissionList = getNumPermissionValue(userId);
+        }
+        return permissionList;
+    }
+
+    private List<String> getNumPermissionValue(Long userId) {
         List<AclRole> roleList = roleService.getRolesByUserId(userId);
-        List<Long> roleIds = roleList.stream().map(role -> role.getId()).collect(Collectors.toList());
+        List<Long> roleIds = roleList.stream().map(AclRole::getId).collect(Collectors.toList());
         List<String> list = new ArrayList<>();
         roleIds.forEach(roleId->{
             list.addAll(this.getPermissionValueByRoleId(roleId));
         });
         return list;
+    }
+
+    private boolean isAdmin(Long userId) {
+        AclUser user = userService.getById(userId);
+        return UserUtils.isAdmin(user.getUsername());
     }
 
 

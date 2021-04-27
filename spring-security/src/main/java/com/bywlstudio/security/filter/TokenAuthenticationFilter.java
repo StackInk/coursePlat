@@ -55,10 +55,7 @@ public class TokenAuthenticationFilter extends BasicAuthenticationFilter {
     @Override
     protected void doFilterInternal(HttpServletRequest request, HttpServletResponse response, FilterChain chain) throws IOException, ServletException {
 
-        logger.info("开始处理请求");
-        if (!request.getRequestURI().contains("user")) {
-            chain.doFilter(request,response);
-        }
+        logger.info("开始处理请求:"+request.getRequestURI());
 
         UsernamePasswordAuthenticationToken authenticationToken = getAuthentication(request);
 
@@ -78,7 +75,7 @@ public class TokenAuthenticationFilter extends BasicAuthenticationFilter {
      * @return 封装好的用户对象，包括用户的权限信息，从 Redis 中获取对应的权限信息
      */
     private UsernamePasswordAuthenticationToken getAuthentication(HttpServletRequest request) {
-        String token = request.getHeader("token");
+        String token = request.getHeader("X-Token");
         if (!StringUtils.isEmpty(token)) {
             String username = JwtUtil.getMemberIdByJwtToken(token);
             if (StringUtils.isEmpty(username)) {return null;}

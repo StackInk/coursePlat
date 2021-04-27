@@ -9,6 +9,7 @@ import com.bywlstudio.security.security.TokenLogoutHandler;
 import com.bywlstudio.security.security.UnauthorizedEntryPoint;
 import org.checkerframework.checker.units.qual.A;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.data.redis.core.RedisTemplate;
 import org.springframework.security.config.annotation.authentication.builders.AuthenticationManagerBuilder;
@@ -21,6 +22,7 @@ import org.springframework.security.core.Authentication;
 import org.springframework.security.core.AuthenticationException;
 import org.springframework.security.core.userdetails.UserDetailsService;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
+import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.security.web.authentication.AuthenticationFailureHandler;
 import org.springframework.security.web.authentication.AuthenticationSuccessHandler;
 
@@ -41,11 +43,15 @@ import java.io.IOException;
 @Configuration
 public class TokenWebSecurityConfig extends WebSecurityConfigurerAdapter {
 
-    @Resource
     private RedisTemplate<String,Object> redisTemplate ;
 
-    @Resource
     private UserDetailsService userDetailsService;
+
+    @Autowired
+    public TokenWebSecurityConfig(RedisTemplate<String,Object> redisTemplate, UserDetailsService userDetailService) {
+        this.redisTemplate = redisTemplate;
+        this.userDetailsService = userDetailService;
+    }
 
     /**
      * 基础配置
@@ -62,7 +68,7 @@ public class TokenWebSecurityConfig extends WebSecurityConfigurerAdapter {
                 .authorizeRequests()
                     .anyRequest().authenticated()
                 .and()
-                    .logout().logoutUrl("/aclservice/user/logout")
+                    .logout().logoutUrl("/user/logout")
                     .addLogoutHandler(new TokenLogoutHandler())
                 .and()
                     .addFilter(new TokenLoginFilter(authenticationManager(),redisTemplate))
@@ -78,12 +84,19 @@ public class TokenWebSecurityConfig extends WebSecurityConfigurerAdapter {
      */
     @Override
     protected void configure(AuthenticationManagerBuilder auth) throws Exception {
-        auth.userDetailsService(userDetailsService).passwordEncoder(new BCryptPasswordEncoder());
+        auth.userDetailsService(userDetailsService).passwordEncoder(this.createPasswordEncoder());
     }
 
     @Override
     public void configure(WebSecurity web) throws Exception {
-        web.ignoring().antMatchers("/swagger-resources/**","/v2/**","swagger-ui.html/**");
+        web.ignoring().antMatchers("/api/**",
+                "/swagger-resources/**", "/webjars/**", "/v2/**", "/swagger-ui.html/**"
+        );
+    }
+
+    @Bean("passwordEncoder")
+    public PasswordEncoder createPasswordEncoder() {
+        return new BCryptPasswordEncoder();
     }
 
 }

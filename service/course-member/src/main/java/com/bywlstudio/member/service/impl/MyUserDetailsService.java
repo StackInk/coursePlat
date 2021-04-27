@@ -24,7 +24,7 @@ import java.util.Objects;
  * @Date: Create in 2021/4/16 17:11
  * @Description:
  */
-@Service
+@Service("userDetailService")
 @Slf4j
 public class MyUserDetailsService implements UserDetailsService {
 

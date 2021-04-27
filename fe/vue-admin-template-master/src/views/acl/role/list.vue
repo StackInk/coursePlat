@@ -2,13 +2,14 @@
   <div class="app-container">
     <!-- 查询表单 -->
     <!--查询表单-->
-    <el-form :inline="true" class="demo-form-inline">
-      <el-form-item>
-        <el-input v-model="searchObj.roleName" placeholder="角色名称"/>
+    <el-form :inline="true" class="demo-form-inline" >
+      <el-form-item >
+        <el-input v-model="searchObj.roleName" placeholder="角色名称" size="small"/>
       </el-form-item>
-
-      <el-button type="primary" icon="el-icon-search" @click="fetchData()">查询</el-button>
-      <el-button type="default" @click="resetData()">清空</el-button>
+      <el-form-item>
+        <el-button type="primary" icon="el-icon-search" size="small" @click="fetchData()">查询</el-button>
+        <el-button type="default" icon="el-icon-error" size="small" @click="resetData()">清空</el-button>
+      </el-form-item>
     </el-form>
 
     <!-- 工具条 -->
@@ -38,9 +39,10 @@
           {{ (page - 1) * limit + scope.$index + 1 }}
         </template>
       </el-table-column>
-
-      <el-table-column prop="roleName" label="角色名称" />
-
+      <el-table-column prop="name" label="角色名称" />
+      <el-table-column prop="code" label="角色编码" />
+      <el-table-column prop="remark" label="角色描述" />
+      <el-table-column prop="gmtCreate" label="创建时间" />
       <el-table-column label="操作" width="200" align="center">
         <template slot-scope="scope">
           <router-link :to="'/acl/role/distribution/'+scope.row.id">
@@ -60,8 +62,9 @@
       :total="total"
       :page-size="limit"
       :page-sizes="[5, 10, 20, 30, 40, 50, 100]"
-      style="padding: 30px 0; text-align: center;"
+      style="padding: 30px 0; text-align: right;"
       layout="sizes, prev, pager, next, jumper, ->, total, slot"
+      background
       @current-change="fetchData"
       @size-change="changeSize"
     />
@@ -116,6 +119,7 @@ export default {
 
       roleApi.getPageList(this.page, this.limit, this.searchObj).then(
         response => {
+          console.log(response)
           this.list = response.data.items
           this.total = response.data.total
 

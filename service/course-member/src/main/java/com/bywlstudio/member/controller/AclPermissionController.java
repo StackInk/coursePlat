@@ -1,9 +1,11 @@
 package com.bywlstudio.member.controller;
 
 
+import com.alibaba.fastjson.JSONObject;
 import com.bywlstudio.common.util.R;
 import com.bywlstudio.member.entity.AclPermission;
 import com.bywlstudio.member.service.IAclPermissionService;
+import com.google.gson.JsonArray;
 import io.swagger.annotations.Api;
 import io.swagger.annotations.ApiOperation;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -31,8 +33,8 @@ public class AclPermissionController {
     @GetMapping
     @ApiOperation("查询所有的菜单信息")
     public R getAllMenu() {
-        AclPermission permission = permissionService.getMenus();
-        return R.ok().data("permission",permission);
+        List<AclPermission> permission = permissionService.getMenus();
+        return R.ok().data("children",permission);
     }
 
     @DeleteMapping("{id}")
@@ -53,7 +55,7 @@ public class AclPermissionController {
     @ApiOperation("根据角色Id获取菜单信息")
     public R getPermissionByRoleId(@PathVariable Long roleId) {
         List<AclPermission> permissionList = permissionService.getPermissionByRoleId(roleId);
-        return R.ok().data("permissions",permissionList);
+        return R.ok().data("children",permissionList);
     }
 
     @PostMapping

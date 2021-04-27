@@ -64,5 +64,8 @@ public class AclUser implements Serializable {
     @TableField(fill = FieldFill.INSERT_UPDATE)
     private Date gmtModified;
 
+    @ApiModelProperty(value = "账户是否被禁用")
+    private Integer enable;
+
 
 }

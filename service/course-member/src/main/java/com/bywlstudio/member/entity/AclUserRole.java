@@ -56,4 +56,6 @@ public class AclUserRole implements Serializable {
         this.roleId = roleId;
         this.userId = userId;
     }
+
+    public AclUserRole(){}
 }

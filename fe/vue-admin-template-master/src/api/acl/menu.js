@@ -1,6 +1,6 @@
 import request from '@/utils/request'
 
-const api_name = '/admin/acl/permission'
+const api_name = '/aclservice/permission'
 
 export default {
   getNestedTreeList() {
@@ -11,33 +11,33 @@ export default {
   },
   removeById(id) {
     return request({
-      url: `${api_name}/remove/${id}`,
+      url: `${api_name}/${id}`,
       method: 'delete'
     })
   },
   saveLevelOne(menu) {
     return request({
-      url: `${api_name}/save`,
+      url: `${api_name}`,
       method: 'post',
       data: menu
     })
   },
   update(menu) {
     return request({
-      url: `${api_name}/update`,
+      url: `${api_name}`,
       method: 'put',
       data: menu
     })
   },
   toAssign(roleId) {
     return request({
-      url: `${api_name}/toAssign/${roleId}`,
+      url: `${api_name}/role/${roleId}`,
       method: 'get'
     })
   },
   doAssign(roleId, permissionId) {
     return request({
-      url: `${api_name}/doAssign`,
+      url: `${api_name}/assign`,
       method: 'post',
       params: { roleId, permissionId }
     })

@@ -1,6 +1,7 @@
 package com.bywlstudio.member.controller;
 
 
+import com.alibaba.fastjson.JSONObject;
 import com.baomidou.mybatisplus.core.conditions.query.QueryWrapper;
 import com.baomidou.mybatisplus.core.metadata.IPage;
 import com.baomidou.mybatisplus.extension.plugins.pagination.Page;
@@ -54,15 +55,17 @@ public class AclUserController {
     public R info() {
         String username = SecurityContextHolder.getContext().getAuthentication().getName();
         Map<String,Object> result = userService.getUserInfo(username);
-        return R.ok().data("info",result);
+        return R.ok().data(result);
     }
 
     @GetMapping("menu")
     @ApiOperation("根据登陆用户的信息，获取用户菜单信息")
     public R getMenu() {
         String username = SecurityContextHolder.getContext().getAuthentication().getName();
-        JsonArray menu = userService.getMenu(username);
-        return R.ok().data("menu",menu);
+//        JsonArray menu = userService.getMenu(username);
+        List<JSONObject> menu = userService.getMenuJackson(username);
+        return R.ok().data("permissionList",menu);
+
     }
 
     @PostMapping("logout")
@@ -78,7 +81,7 @@ public class AclUserController {
                       AclUser user) {
         Page<AclUser> page1 = new Page<>(page,limit);
         QueryWrapper<AclUser> queryWrapper = null;
-        if (StringUtils.isEmpty(user.getUsername())) {
+        if (!StringUtils.isEmpty(user.getUsername())) {
             queryWrapper = new QueryWrapper<>();
             queryWrapper.like("username",user.getUsername());
         }
@@ -86,10 +89,16 @@ public class AclUserController {
         return R.ok().data("item",page2.getRecords()).data("total",page2.getTotal());
     }
 
+    @GetMapping("/{id}")
+    public R getUserById(@PathVariable Long id) {
+        AclUser byId = userService.getById(id);
+        return R.ok().data("user",byId);
+    }
+
     @PostMapping
     @ApiOperation("新增用户")
     public R addUser(@RequestBody AclUser user) {
-        userService.save(user);
+        userService.saveUser(user);
         return R.ok();
     }
 
@@ -107,6 +116,13 @@ public class AclUserController {
         return R.ok();
     }
 
+    @DeleteMapping("/batchRemove")
+    @ApiOperation("删除多个用户")
+    public R deleteUsers(@RequestBody List<Long> userIds) {
+        userService.deleteUsers(userIds);
+        return R.ok();
+    }
+
     @GetMapping("/role/{id}")
     @ApiOperation("根据用户获取角色数据")
     public R getRoleDataByUserId(@PathVariable Long id) {
@@ -114,12 +130,14 @@ public class AclUserController {
         return R.ok().data("roleList",roleList);
     }
 
-    @PostMapping("/role}")
+    @PostMapping("/role")
     @ApiOperation("根据用户ID分配角色")
     public R setRoleByUserId(Long userId, Long[] roleIds) {
         roleService.setRoleByUserId(userId,roleIds);
         return R.ok();
     }
+
+
 
 
 

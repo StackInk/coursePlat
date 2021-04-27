@@ -1,6 +1,6 @@
 import request from '@/utils/request'
 
-const api_name = '/admin/acl/user'
+const api_name = '/aclservice/user'
 
 export default {
 
@@ -13,14 +13,14 @@ export default {
   },
   getById(id) {
     return request({
-      url: `${api_name}/get/${id}`,
+      url: `${api_name}/${id}`,
       method: 'get'
     })
   },
 
   save(user) {
     return request({
-      url: `${api_name}/save`,
+      url: `${api_name}`,
       method: 'post',
       data: user
     })
@@ -28,27 +28,27 @@ export default {
 
   updateById(user) {
     return request({
-      url: `${api_name}/update`,
+      url: `${api_name}`,
       method: 'put',
       data: user
     })
   },
   getAssign(userId) {
     return request({
-      url: `${api_name}/toAssign/${userId}`,
+      url: `${api_name}/role/${userId}`,
       method: 'get'
     })
   },
   saveAssign(userId, roleId) {
     return request({
-      url: `${api_name}/doAssign`,
+      url: `${api_name}/role`,
       method: 'post',
       params: { userId, roleId }
     })
   },
   removeById(id) {
     return request({
-      url: `${api_name}/remove/${id}`,
+      url: `${api_name}/${id}`,
       method: 'delete'
     })
   },

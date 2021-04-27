@@ -40,8 +40,7 @@ public class TokenLoginFilter extends UsernamePasswordAuthenticationFilter {
     public TokenLoginFilter(AuthenticationManager authenticationManager,RedisTemplate redisTemplate) {
         this.authenticationManager = authenticationManager;
         this.redisTemplate = redisTemplate;
-        this.setPostOnly(false);
-        this.setRequiresAuthenticationRequestMatcher(new AntPathRequestMatcher("/aclservice/user/login","POST"));
+        this.setRequiresAuthenticationRequestMatcher(new AntPathRequestMatcher("/user/login","POST"));
     }
 
 
@@ -93,6 +92,6 @@ public class TokenLoginFilter extends UsernamePasswordAuthenticationFilter {
      */
     @Override
     protected void unsuccessfulAuthentication(HttpServletRequest request, HttpServletResponse response, AuthenticationException failed) throws IOException, ServletException {
-        ResponseUtil.out(response,R.error());
+        ResponseUtil.out(response,R.error().message("用户名或密码错误"));
     }
 }
