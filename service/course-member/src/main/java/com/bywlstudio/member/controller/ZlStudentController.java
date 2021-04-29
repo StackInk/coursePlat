@@ -57,6 +57,13 @@ public class ZlStudentController {
         return R.ok();
     }
 
+    @DeleteMapping("{id}")
+    @ApiOperation("删除学生信息")
+    public R deleteStudent(@PathVariable Long id) {
+        studentService.removeById(id);
+        return R.ok().message("删除学生成功");
+    }
+
 
 
 

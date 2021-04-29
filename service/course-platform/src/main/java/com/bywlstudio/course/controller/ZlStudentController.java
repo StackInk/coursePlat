@@ -59,7 +59,7 @@ public class ZlStudentController {
     }
 
     @DeleteMapping("{id}")
-    @ApiOperation(value = "删除学生",httpMethod = "Delete")
+    @ApiOperation(value = "删除学生")
     public R deleteStudent(@PathVariable Long id) {
         studentService.removeById(id);
         return R.ok();

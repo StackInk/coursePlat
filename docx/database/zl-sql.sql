@@ -94,6 +94,8 @@ CREATE TABLE `zl_course` (
     `type` tinyint(1) UNSIGNED NOT NULL DEFAULT 0 COMMENT '课程类型(0->智慧树,1->慕课,2->线下)',
     `place` varchar(20) NOT NULL DEFAULT '' COMMENT '课程上课地址',
     `stock` int UNSIGNED NOT NULL DEFAULT 0 COMMENT '课程库存',
+    `start_time` datetime NOT NULL COMMENT '课程开始时间',
+    `time` varchar(20) NOT NULL DEFAULT '' COMMENT '上课时间',
     `is_deleted` tinyint(1) unsigned NOT NULL DEFAULT 0 COMMENT '逻辑删除 1（true）已删除， 0（false）未删除',
     `gmt_create` datetime NOT NULL COMMENT '创建时间',
     `gmt_modified` datetime NOT NULL COMMENT '更新时间',

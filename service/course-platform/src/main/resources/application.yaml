@@ -2,7 +2,8 @@ server:
   port: 8003
   servlet:
     context-path: /courseservice
-
+  tomcat:
+    uri-encoding: UTF-8
 spring:
   application:
     name: SERVICE-COURSE
@@ -10,19 +11,28 @@ spring:
     active: dev
   datasource:
     driver-class-name: com.mysql.cj.jdbc.Driver
-    url: jdbc:mysql://localhost:3306/courseplatform?serverTimezone=GMT%2B8
+    url: jdbc:mysql://39.97.189.37:3306/courseplatform?serverTimezone=GMT%2B8
     username: root
-    password: '0922'
+    password: '123456'
   jackson:
     date-format: yyyy-MM-dd HH:mm:ss
     time-zone: GMT+8
   redis:
     database: 0
-    host: locahost
+    host: 39.97.189.37
     port: 6379
     lettuce:
       pool:
         min-idle: 3
+  cloud:
+    nacos:
+      discovery:
+        server-addr: 39.97.189.37:8848
+  http:
+    encoding:
+      charset: UTF-8
+      enabled: true
+      force: true
 
 mybatis-plus:
   configuration:

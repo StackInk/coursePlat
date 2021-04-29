@@ -44,12 +44,18 @@ public class ZlCourse implements Serializable {
     private Integer type;
 
     @ApiModelProperty(value = "课程上课地址")
-    @NotNull
     private String place;
 
     @ApiModelProperty(value = "课程库存")
     @NotNull
     private Integer stock;
+
+    @ApiModelProperty(value = "开始上课时间")
+    @NotNull
+    private Date startTime;
+
+    @ApiModelProperty(value = "上课时间")
+    private String time;
 
     @ApiModelProperty(value = "逻辑删除 1（true）已删除， 0（false）未删除")
     @TableLogic
@@ -64,5 +70,14 @@ public class ZlCourse implements Serializable {
     @TableField(fill = FieldFill.INSERT_UPDATE)
     private Date gmtModified;
 
+    public ZlCourse(){}
 
+    public ZlCourse(@NotNull String name, @NotNull Integer type, String place, @NotNull Integer stock, @NotNull Date startTime, String time) {
+        this.name = name;
+        this.type = type;
+        this.place = place;
+        this.stock = stock;
+        this.startTime = startTime;
+        this.time = time;
+    }
 }
