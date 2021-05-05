@@ -1,0 +1,112 @@
+<template>
+  <div class="app-container">
+    <el-card shadow="hover" class="zl-card">
+      <div slot="header" class="clearfix">
+        <span>{{ isEdit?'修改学生':'添加学生' }}</span>
+      </div>
+      <el-form
+        ref="adminForm"
+        :model="student"
+        label-width="150px"
+        size="small">
+        <el-form-item label="名称：">
+          <el-input v-model="student.name" style="width: 250px"/>
+        </el-form-item>
+        <el-form-item label="绑定登陆账号">
+          <!-- TODO 下拉框 -->
+          <el-select v-model="student.uid" placeholder="请选择" style="width: 250px">
+            <el-option
+              v-for="item in users"
+              :key="item.id"
+              :label="item.name"
+              :value="item.id"/>
+          </el-select>
+        </el-form-item>
+        <el-form-item label="学生院系">
+          <el-input v-model="student.department" style="width: 250px"/>
+        </el-form-item>
+        <el-form-item label="学生专业">
+          <el-input v-model="student.major" style="width: 250px"/>
+        </el-form-item>
+      </el-form>
+      <div class="zl-button">
+        <el-button type="warning" size="small" @click="handleReset()">取 消</el-button>
+        <el-button type="success" size="small" @click="handleConfirm()">确 定</el-button>
+      </div>
+    </el-card>
+
+  </div>
+</template>
+
+<script>
+import student from '@/api/student/student'
+
+const defaultStudent = {
+  name: null,
+  department: null,
+  major: null
+}
+
+export default {
+  data() {
+    return {
+      isEdit: false,
+      course: Object.assign({}, defaultStudent),
+      users: []
+    }
+  },
+  watch: {
+    $route(to, from) {
+      this.init()
+    }
+  },
+  created() {
+    this.init()
+  },
+  methods: {
+    init() {
+      if (this.$route.params && this.$route.params.id) {
+        this.isEdit = true
+        this.handleStudentById(this.$route.params.id)
+      }
+    },
+    handleStudentById() {
+      student.getCourseById(this.$route.params.id).then(response => {
+        this.student = response.data.student
+      })
+    },
+    handleConfirm() {
+      if (this.$route.params && this.$route.params.id) {
+        this.updateStudent()
+      } else {
+        this.saveStudent()
+      }
+    },
+    updateStudent() {
+      student.updateStudent(this.student).then(response => {
+
+      })
+    },
+    saveStudent() {
+      student.saveStudent(this.student).then(response => {
+
+      })
+    },
+    handleChange() {
+
+    },
+    handleReset() {
+      this.$router.push({ path: '/student/list' })
+    }
+
+  }
+}
+</script>
+
+<style  scoped>
+	.zl-button {
+		display: flex;
+		justify-content: center;
+		align-items: center;
+	}
+</style>

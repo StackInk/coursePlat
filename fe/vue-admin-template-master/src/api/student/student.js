@@ -1,6 +1,6 @@
 import request from '@/utils/request'
 
-const api_name = '/courseservice/course'
+const api_name = '/aclservice/student'
 
 export default {
   getPageList(page, limit) {
@@ -15,36 +15,37 @@ export default {
       method: 'delete'
     })
   },
-  getCourseById(courseId) {
+  getStudentById(id) {
     return request({
-      url: `${api_name}/${courseId}`,
+      url: `${api_name}/${id}`,
       method: 'get'
     })
   },
-  saveCourse(course) {
+  saveStudent(student) {
     return request({
       url: `${api_name}`,
       method: 'post',
-      data: course
+      data: student
     })
   },
-  updateCourse(course) {
+  updateStudent(student) {
     return request({
       url: `${api_name}`,
       method: 'put',
-      data: course
+      data: student
     })
   },
-  getCourseByTeacherId(teacherId) {
+  getStudentsByCourseId(courseId) {
     return request({
-      url: `${api_name}/teacher/${teacherId}`,
+      url: `${api_name}/course/${courseId}`,
       method: 'get'
     })
   },
-  getCourseByStudentId(studentId) {
+  getStudentByName(name) {
     return request({
-      url: `${api_name}/teacher/${studentId}`,
-      method: 'get'
+      url: `${api_name}`,
+      method: 'get',
+      param: name
     })
   }
 }

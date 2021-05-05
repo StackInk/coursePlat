@@ -79,7 +79,7 @@ CREATE TABLE `zl_teacher` (
     `uid` BIGINT UNSIGNED NOT NULL DEFAULT 0 COMMENT '账户ID',
     `name` VARCHAR(20) NOT NULL DEFAULT '' COMMENT '教师姓名',
     `description` text NULL  COMMENT '教师简介',
-    `rank` tinyint(1) NOT NULL DEFAULT 0 COMMENT '教师职称',
+    `rank` tinyint(1) NOT NULL DEFAULT 0 COMMENT '教师职称(1->讲师,2->副教授,3->教授)',
     `is_deleted` tinyint(1) unsigned NOT NULL DEFAULT 0 COMMENT '逻辑删除 1（true）已删除， 0（false）未删除',
     `gmt_create` datetime NOT NULL COMMENT '创建时间',
     `gmt_modified` datetime NOT NULL COMMENT '更新时间',
@@ -91,7 +91,7 @@ CREATE TABLE `zl_teacher` (
 CREATE TABLE `zl_course` (
     `id` BIGINT UNSIGNED NOT NULL AUTO_INCREMENT COMMENT '主键ID',
     `name` varchar(20) NOT NULL DEFAULT '' COMMENT '课程名称',
-    `type` tinyint(1) UNSIGNED NOT NULL DEFAULT 0 COMMENT '课程类型(0->智慧树,1->慕课,2->线下)',
+    `type` tinyint(1) UNSIGNED NOT NULL DEFAULT 0 COMMENT '课程类型(1->智慧树,2->慕课,3->线下)',
     `place` varchar(20) NOT NULL DEFAULT '' COMMENT '课程上课地址',
     `stock` int UNSIGNED NOT NULL DEFAULT 0 COMMENT '课程库存',
     `start_time` datetime NOT NULL COMMENT '课程开始时间',
