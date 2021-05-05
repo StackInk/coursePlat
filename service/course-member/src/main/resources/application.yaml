@@ -20,12 +20,9 @@ spring:
     date-format: yyyy-MM-dd HH:mm:ss
     time-zone: GMT+8
   redis:
-    database: 0
-    host: 39.97.189.37
     port: 6379
-    lettuce:
-      pool:
-        min-idle: 3
+    host: 39.97.189.37
+    password: bywlstudio6379
 
   cloud:
     nacos:

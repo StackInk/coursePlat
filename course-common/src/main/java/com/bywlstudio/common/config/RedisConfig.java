@@ -31,13 +31,7 @@ import java.time.Duration;
 @EnableCaching
 public class RedisConfig extends CachingConfigurerSupport {
 
-
-    private Long expire_time = 600L ;
-
-    @Bean
-    public LettuceConnectionFactory redisConnectionFactory() {
-        return new LettuceConnectionFactory(new RedisStandaloneConfiguration());
-    }
+    private final Long EXPIRE_TIME = 600L ;
 
 
     @Bean
@@ -70,7 +64,7 @@ public class RedisConfig extends CachingConfigurerSupport {
         jackson2JsonRedisSerializer.setObjectMapper(om);
         // 配置序列化（解决乱码的问题）,过期时间600秒
         RedisCacheConfiguration config = RedisCacheConfiguration.defaultCacheConfig()
-                .entryTtl(Duration.ofSeconds(expire_time))
+                .entryTtl(Duration.ofSeconds(EXPIRE_TIME))
                 .serializeKeysWith(RedisSerializationContext.SerializationPair.fromSerializer(redisSerializer))
                 .serializeValuesWith(RedisSerializationContext.SerializationPair.fromSerializer(jackson2JsonRedisSerializer))
                 .disableCachingNullValues();

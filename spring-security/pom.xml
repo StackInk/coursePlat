@@ -19,10 +19,10 @@
             <artifactId>spring-boot-starter-security</artifactId>
         </dependency>
 
-        <dependency>
-            <groupId>io.lettuce</groupId>
-            <artifactId>lettuce-core</artifactId>
-        </dependency>
+<!--        <dependency>-->
+<!--            <groupId>io.lettuce</groupId>-->
+<!--            <artifactId>lettuce-core</artifactId>-->
+<!--        </dependency>-->
 
         <dependency>
             <groupId>io.jsonwebtoken</groupId>
