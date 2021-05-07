@@ -98,10 +98,10 @@
         label="操作"
       >
         <template slot-scope="scope">
-          <el-button type="text" size="small" @click="handleTeacher(scope.row)">上课教师</el-button>
-          <el-button type="text" size="small" @click="handleStudent(scope.row)">上课学生</el-button>
-          <el-button type="text" size="small" @click="handleEdit(scope.row)">编辑</el-button>
-          <el-button type="text" size="small" @click="handleRemove(scope.row)">删除</el-button>
+          <el-button type="text" size="small" @click="handleTeacher(scope.row.id)">上课教师</el-button>
+          <el-button type="text" size="small" @click="handleStudent(scope.row.id)">上课学生</el-button>
+          <el-button type="text" size="small" @click="handleEdit(scope.row.id)">编辑</el-button>
+          <el-button type="text" size="small" @click="handleRemove(scope.row.id)">删除</el-button>
         </template>
       </el-table-column>
     </el-table>
@@ -156,6 +156,7 @@
 import course from '@/api/course/course'
 import teacher from '@/api/teacher/teacher'
 import student from '@/api/student/student'
+
 export default {
   filters: {
     handleType(type) {
@@ -193,7 +194,8 @@ export default {
       gridData: [],
       isTeacher: true,
       studentData: [],
-      teacherData: []
+      teacherData: [],
+      total: 0
     }
   },
   created() {
@@ -225,8 +227,9 @@ export default {
     },
     // 处理查询请求
     handleSearchList() {
-      course.getCoursesByName(this.listQuery.keyword).then(response => {
-        this.tableData = response.data.course
+      course.getPageListByName(this.page, this.limit, this.listQuery.keyword).then(response => {
+        this.tableData = response.data.items
+        this.total = response.data.total
       })
     },
     handleResetSearch() {
@@ -239,6 +242,7 @@ export default {
     },
     handleTeacher(courseId) {
       this.dialogFormVisibleTeacher = true
+      console.log(courseId)
       teacher.getTeachersByCourseId(courseId).then(response => {
         this.teacherData = response.data.teachers
       })

@@ -71,9 +71,9 @@
         label="操作"
       >
         <template slot-scope="scope">
-          <el-button type="text" size="small" @click="handleCourse(scope.row)">已选课程</el-button>
-          <el-button type="text" size="small" @click="handleEdit(scope.row)">编辑</el-button>
-          <el-button type="text" size="small" @click="handleRemove(scope.row)">删除</el-button>
+          <el-button type="text" size="small" @click="handleCourse(scope.row.id)">已选课程</el-button>
+          <el-button type="text" size="small" @click="handleEdit(scope.row.id)">编辑</el-button>
+          <el-button type="text" size="small" @click="handleRemove(scope.row.id)">删除</el-button>
         </template>
       </el-table-column>
     </el-table>
@@ -137,7 +137,8 @@ export default {
       limit: 5,
       types: ['success', 'warning', ''],
       dialogFormVisible: false,
-      gridData: []
+      gridData: [],
+      total: 0
     }
   },
   created() {
@@ -169,8 +170,9 @@ export default {
     },
     // 处理查询请求
     handleSearchList() {
-      teacher.getTeacherByName(this.listQuery.keyword).then(response => {
-        this.tableData = response.data.teachers
+      teacher.getPageListByName(this.page, this.limit, this.listQuery.keyword).then(response => {
+        this.tableData = response.data.items
+        this.total = response.data.total
       })
     },
     handleResetSearch() {

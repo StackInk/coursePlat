@@ -15,6 +15,7 @@ import com.bywlstudio.member.util.MenuUtils;
 import com.bywlstudio.member.util.PermissionUtils;
 import com.bywlstudio.member.util.UserUtils;
 import com.google.gson.JsonArray;
+import lombok.extern.slf4j.Slf4j;
 import lombok.val;
 import com.alibaba.fastjson.JSONObject;
 import org.springframework.stereotype.Service;
@@ -37,6 +38,7 @@ import java.util.stream.Collectors;
  * @since 2021-04-08
  */
 @Service("permissionService")
+@Slf4j
 public class AclPermissionServiceImpl extends ServiceImpl<AclPermissionMapper, AclPermission> implements IAclPermissionService {
 
     @Resource
@@ -57,8 +59,9 @@ public class AclPermissionServiceImpl extends ServiceImpl<AclPermissionMapper, A
     @Override
     public List<AclPermission> getPermissionByRoleId(Long id) {
         List<AclRolePermission> list = rolePermissionService.list(new QueryWrapper<AclRolePermission>().eq("role_id", id).select("permission_id"));
-        List<Long> permissionIds = list.stream().map(aclRolePermission -> aclRolePermission.getPermissionId()).collect(Collectors.toList());
-        return baseMapper.selectBatchIds(permissionIds);
+        List<Long> permissionIds = list.stream().map(AclRolePermission::getPermissionId).collect(Collectors.toList());
+        log.info("当前角色Id:{},拥有的权限ID为：{}",id,permissionIds);
+        return PermissionUtils.build(baseMapper.selectBatchIds(permissionIds));
     }
 
     /**

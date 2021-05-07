@@ -26,7 +26,7 @@ import javax.annotation.Resource;
  * @since 2021-04-08
  */
 @RestController
-@RequestMapping("/student")
+@RequestMapping("/zl-student")
 @Api("学生接口")
 public class ZlStudentController {
 

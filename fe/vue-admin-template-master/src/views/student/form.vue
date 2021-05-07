@@ -31,7 +31,7 @@
       </el-form>
       <div class="zl-button">
         <el-button type="warning" size="small" @click="handleReset()">取 消</el-button>
-        <el-button type="success" size="small" @click="handleConfirm()">确 定</el-button>
+        <el-button v-loading.fullscreen.lock="fullscreenLoading" type="success" size="small" @click="handleConfirm()">确 定</el-button>
       </div>
     </el-card>
 
@@ -52,7 +52,8 @@ export default {
     return {
       isEdit: false,
       course: Object.assign({}, defaultStudent),
-      users: []
+      users: [],
+      fullscreenLoading: false
     }
   },
   watch: {
@@ -71,7 +72,7 @@ export default {
       }
     },
     handleStudentById() {
-      student.getCourseById(this.$route.params.id).then(response => {
+      student.getStudentById(this.$route.params.id).then(response => {
         this.student = response.data.student
       })
     },
@@ -83,13 +84,19 @@ export default {
       }
     },
     updateStudent() {
+      this.fullscreenLoading = true
       student.updateStudent(this.student).then(response => {
-
+        this.fullscreenLoading = false
+      }).catch(response => {
+        this.fullscreenLoading = false
       })
     },
     saveStudent() {
+      this.fullscreenLoading = true
       student.saveStudent(this.student).then(response => {
-
+        this.fullscreenLoading = false
+      }).catch(response => {
+        this.fullscreenLoading = false
       })
     },
     handleChange() {

@@ -1,12 +1,18 @@
 package com.bywlstudio.course.controller;
 
 
+import com.baomidou.mybatisplus.core.conditions.query.QueryWrapper;
+import com.baomidou.mybatisplus.core.metadata.IPage;
+import com.baomidou.mybatisplus.extension.plugins.pagination.Page;
 import com.bywlstudio.common.util.R;
 import com.bywlstudio.course.entity.ZlCourse;
 import com.bywlstudio.course.entity.ZlStudent;
+import com.bywlstudio.course.entity.ZlTeacher;
 import com.bywlstudio.course.service.IZlStudentService;
+import com.bywlstudio.course.vo.CourseVo;
 import io.swagger.annotations.Api;
 import io.swagger.annotations.ApiOperation;
+import io.swagger.annotations.ApiParam;
 import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.*;
 
@@ -30,12 +36,16 @@ public class ZlStudentController {
     private IZlStudentService studentService;
 
 
-    @GetMapping
+    @GetMapping("/{page}/{limit}")
     @ApiOperation("获取学生列表")
-    public R listStudent() {
-        List<ZlStudent> students = studentService.list(null);
-        return R.ok().data("students",students);
+    public R listUser(@ApiParam(name = "当前页",value = "1",required = true) @PathVariable Long page,
+                      @ApiParam(name = "页面记录数",value = "10",required = true) @PathVariable Long limit) {
+        Page<ZlStudent> page1 = new Page<>(page,limit);
+        IPage<ZlStudent> page2 = studentService.page(page1, null);
+        return R.ok().data("item",page2.getRecords()).data("total",page2.getTotal());
     }
+
+
 
     @GetMapping("{id}")
     @ApiOperation("根据课程ID获取学生信息")
@@ -63,6 +73,21 @@ public class ZlStudentController {
     public R deleteStudent(@PathVariable Long id) {
         studentService.removeById(id);
         return R.ok();
+    }
+
+    @GetMapping("/name/{page}/{limit}")
+    @ApiOperation("根据名字获取对应的数据")
+    public R getPageListByName(@ApiParam(name = "当前页",value = "1",required = true) @PathVariable Long page,
+                               @ApiParam(name = "页面记录数",value = "10",required = true) @PathVariable Long limit,
+                               @ApiParam(name = "名字",value = "Java",required = false) @RequestParam("name") String name) {
+        IPage<ZlStudent> page1 = studentService.getPageListByName(page,limit,name);
+        return R.ok().data("items",page1.getRecords()).data("total",page1.getTotal());
+    }
+
+    @GetMapping("course/{id}")
+    public R getTeachersByCourseId(@PathVariable Long id) {
+        List<ZlStudent> studentList = studentService.getStudentByCourseId(id);
+        return R.ok().data("students",studentList);
     }
 
 

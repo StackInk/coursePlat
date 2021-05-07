@@ -52,5 +52,12 @@ public class ZlCourseTeacher implements Serializable {
     @TableField(fill = FieldFill.INSERT_UPDATE)
     private Date gmtModified;
 
+    public ZlCourseTeacher(){}
+
+    public ZlCourseTeacher(Long cid,Long tid){
+        this.cid = cid;
+        this.tid = tid;
+    }
+
 
 }

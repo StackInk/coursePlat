@@ -41,14 +41,14 @@ public class AclPermissionController {
     @ApiOperation("删除当前菜单")
     public R removeMenu(@PathVariable Long id) {
         permissionService.deletePermission(id);
-        return R.ok();
+        return R.ok().message("菜单删除成功");
     }
 
     @PostMapping("/assign")
     @ApiOperation("根据角色ID给角色分配权限")
     public R setPermissionByRole(Long roleId, Long[] permissionIds) {
         permissionService.setPermissionByRoleId(roleId,permissionIds);
-        return R.ok();
+        return R.ok().message("权限分配成功");
     }
 
     @GetMapping("/role/{roleId}")
@@ -62,14 +62,14 @@ public class AclPermissionController {
     @ApiOperation("新增菜单")
     public R createPermission(@RequestBody AclPermission permission) {
         permissionService.save(permission);
-        return R.ok();
+        return R.ok().message("菜单添加成功");
     }
 
     @PutMapping
     @ApiOperation("更新菜单")
     public R updatePermission(@RequestBody AclPermission permission) {
         permissionService.updateById(permission);
-        return R.ok();
+        return R.ok().message("菜单更新成功");
     }
 
 

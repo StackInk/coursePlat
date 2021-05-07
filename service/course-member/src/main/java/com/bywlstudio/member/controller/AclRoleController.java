@@ -12,6 +12,7 @@ import com.bywlstudio.member.service.IAclRoleService;
 import io.swagger.annotations.Api;
 import io.swagger.annotations.ApiOperation;
 import io.swagger.annotations.ApiParam;
+import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.util.StringUtils;
 import org.springframework.web.bind.annotation.*;
@@ -30,6 +31,7 @@ import java.util.List;
 @RestController
 @RequestMapping("/role")
 @Api("角色信息")
+@Slf4j
 public class AclRoleController {
 
     @Autowired
@@ -43,6 +45,7 @@ public class AclRoleController {
     public R listRolePage(@ApiParam(name = "当前页",value = "1",required = true) @PathVariable Long page,
                           @ApiParam(name = "记录数",value = "10",required = true) @PathVariable Long limit,
                           AclRole role) {
+        log.info("携带查询参数{}",role);
         Page<AclRole> roles = new Page<>(page,limit);
         QueryWrapper<AclRole> queryWrapper = null ;
         if(!StringUtils.isEmpty(role.getName())) {

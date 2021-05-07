@@ -1,6 +1,6 @@
 import request from '@/utils/request'
 
-const api_name = '/aclservice/teacher'
+const api_name = '/courseservice/teacher'
 
 export default {
   getPageList(page, limit) {
@@ -41,11 +41,16 @@ export default {
       method: 'get'
     })
   },
-  getTeacherByName(name) {
+  getPageListByName(page, limit, name) {
     return request({
-      url: `${api_name}`,
-      method: 'get',
-      param: name
+      url: `${api_name}/name/${page}/${limit}/?name=${name}`,
+      method: 'get'
+    })
+  },
+  listTeacher() {
+    return request({
+      url: `${api_name}/all`,
+      method: 'get'
     })
   }
 }

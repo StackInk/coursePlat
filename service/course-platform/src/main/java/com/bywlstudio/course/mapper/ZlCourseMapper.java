@@ -3,6 +3,8 @@ package com.bywlstudio.course.mapper;
 import com.bywlstudio.course.entity.ZlCourse;
 import com.baomidou.mybatisplus.core.mapper.BaseMapper;
 
+import java.util.List;
+
 /**
  * <p>
  * 课程表 Mapper 接口

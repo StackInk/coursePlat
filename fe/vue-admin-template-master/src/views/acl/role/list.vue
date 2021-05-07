@@ -4,7 +4,7 @@
     <!--查询表单-->
     <el-form :inline="true" class="demo-form-inline" >
       <el-form-item >
-        <el-input v-model="searchObj.roleName" placeholder="角色名称" size="small"/>
+        <el-input v-model="searchObj.name" placeholder="角色名称" size="small"/>
       </el-form-item>
       <el-form-item>
         <el-button type="primary" icon="el-icon-search" size="small" @click="fetchData()">查询</el-button>
@@ -39,10 +39,10 @@
           {{ (page - 1) * limit + scope.$index + 1 }}
         </template>
       </el-table-column>
-      <el-table-column prop="name" label="角色名称" />
-      <el-table-column prop="code" label="角色编码" />
-      <el-table-column prop="remark" label="角色描述" />
-      <el-table-column prop="gmtCreate" label="创建时间" />
+      <el-table-column prop="name" label="角色名称" align="center"/>
+      <el-table-column prop="code" label="角色编码" align="center"/>
+      <el-table-column prop="remark" label="角色描述" align="center" />
+      <el-table-column prop="gmtCreate" label="创建时间" align="center"/>
       <el-table-column label="操作" width="200" align="center">
         <template slot-scope="scope">
           <router-link :to="'/acl/role/distribution/'+scope.row.id">

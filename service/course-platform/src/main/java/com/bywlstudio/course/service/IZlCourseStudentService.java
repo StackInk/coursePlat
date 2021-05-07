@@ -1,6 +1,6 @@
 package com.bywlstudio.course.service;
 
-import com.bywlstudio.course.entity.ZlStudentTeacher;
+import com.bywlstudio.course.entity.ZlCourseStudent;
 import com.baomidou.mybatisplus.extension.service.IService;
 
 /**
@@ -11,6 +11,6 @@ import com.baomidou.mybatisplus.extension.service.IService;
  * @author StackInk
  * @since 2021-04-08
  */
-public interface IZlStudentTeacherService extends IService<ZlStudentTeacher> {
+public interface IZlCourseStudentService extends IService<ZlCourseStudent> {
 
 }

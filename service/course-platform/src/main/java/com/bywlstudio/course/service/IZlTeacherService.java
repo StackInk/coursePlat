@@ -1,7 +1,10 @@
 package com.bywlstudio.course.service;
 
+import com.baomidou.mybatisplus.core.metadata.IPage;
 import com.bywlstudio.course.entity.ZlTeacher;
 import com.baomidou.mybatisplus.extension.service.IService;
+
+import java.util.List;
 
 /**
  * <p>
@@ -13,4 +16,7 @@ import com.baomidou.mybatisplus.extension.service.IService;
  */
 public interface IZlTeacherService extends IService<ZlTeacher> {
 
+    List<ZlTeacher> getTeachersByCourseId(Long courseId);
+
+    IPage<ZlTeacher> getPageListByName(Long page, Long limit, String name);
 }

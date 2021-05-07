@@ -62,7 +62,7 @@
       </el-form>
       <div class="zl-button">
         <el-button type="warning" size="small" @click="handleReset()">取 消</el-button>
-        <el-button type="success" size="small" @click="handleConfirm()">确 定</el-button>
+        <el-button v-loading.fullscreen.lock="fullscreenLoading" type="success" size="small" @click="handleConfirm()">确 定</el-button>
       </div>
     </el-card>
 
@@ -95,7 +95,8 @@ export default {
       isEdit: false,
       course: Object.assign({}, defaultCourse),
       teachers: [],
-      types: Object.assign({}, defaultType)
+      types: Object.assign({}, defaultType),
+      fullscreenLoading: false
     }
   },
   watch: {
@@ -132,13 +133,19 @@ export default {
       }
     },
     updateCourse() {
+      this.fullscreenLoading = true
       course.updateCourse(this.course).then(response => {
-
+        this.fullscreenLoading = false
+      }).catch(response => {
+        this.fullscreenLoading = false
       })
     },
     saveCourse() {
+      this.fullscreenLoading = true
       course.saveCourse(this.course).then(response => {
-
+        this.fullscreenLoading = false
+      }).catch(response => {
+        this.fullscreenLoading = false
       })
     },
     handleChange() {

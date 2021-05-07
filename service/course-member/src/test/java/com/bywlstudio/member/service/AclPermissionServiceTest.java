@@ -33,7 +33,7 @@ class AclPermissionServiceTest {
      */
     @Test
     void getPermissionByRoleId() throws CourseException {
-
+        System.out.println(permissionService.getPermissionByRoleId(1L));
     }
 
     @Test

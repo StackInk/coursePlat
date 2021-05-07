@@ -32,7 +32,7 @@
       </el-form>
       <div class="zl-button">
         <el-button type="warning" size="small" @click="handleReset()">取 消</el-button>
-        <el-button type="success" size="small" @click="handleConfirm()">确 定</el-button>
+        <el-button v-loading.fullscreen.lock="fullscreenLoading" type="success" size="small" @click="handleConfirm()">确 定</el-button>
       </div>
     </el-card>
 
@@ -59,7 +59,8 @@ export default {
     return {
       isEdit: false,
       teacher: Object.assign({}, defaultTeacher),
-      rankData: Object.assign([], defalutRank)
+      rankData: Object.assign([], defalutRank),
+      fullscreenLoading: false
     }
   },
   watch: {
@@ -90,13 +91,19 @@ export default {
       }
     },
     updateTeacher() {
+      this.fullscreenLoading = true
       teacher.updateTeacher(this.teacher).then(response => {
-
+        this.fullscreenLoading = false
+      }).catch(response => {
+        this.fullscreenLoading = false
       })
     },
     saveTeacher() {
+      this.fullscreenLoading = true
       teacher.saveTeacher(this.teacher).then(response => {
-
+        this.fullscreenLoading = false
+      }).catch(response => {
+        this.fullscreenLoading = false
       })
     },
     handleChange() {

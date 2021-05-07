@@ -9,6 +9,12 @@ export default {
       method: 'get'
     })
   },
+  getPageListByName(page, limit, name) {
+    return request({
+      url: `${api_name}/name/${page}/${limit}/?name=${name}`,
+      method: 'get'
+    })
+  },
   removeById(id) {
     return request({
       url: `${api_name}/${id}`,

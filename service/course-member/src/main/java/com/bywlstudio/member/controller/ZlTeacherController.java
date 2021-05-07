@@ -24,7 +24,7 @@ import javax.annotation.Resource;
  * @since 2021-04-08
  */
 @RestController
-@RequestMapping("/teacher")
+@RequestMapping("/zl-teacher")
 public class ZlTeacherController {
 
     @Autowired

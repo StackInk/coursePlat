@@ -1,23 +1,32 @@
 <template>
   <div class="app-container">
-    <el-form
-      ref="role"
-      :model="role"
-      :rules="validateRules"
-      label-width="120px"
-    >
-      <el-form-item label="角色名称" prop="roleName">
-        <el-input v-model="role.roleName" />
-      </el-form-item>
-      <el-form-item>
-        <el-button
-          :disabled="saveBtnDisabled"
-          type="primary"
-          @click="saveOrUpdate"
-        >保存</el-button
-        >
-      </el-form-item>
-    </el-form>
+    <el-card shadow="hover" class="zl-card">
+      <div slot="header" class="clearfix">
+        <span>{{ isEdit ?'修改角色信息':'添加角色信息' }}</span>
+      </div>
+      <el-form
+        ref="role"
+        :model="role"
+        :rules="validateRules"
+        label-width="120px"
+        size="small"
+      >
+        <el-form-item label="角色名称" prop="name" >
+          <el-input v-model="role.name" style="width:250px" />
+        </el-form-item>
+        <el-form-item label="角色编码" prop="code" >
+          <el-input v-model="role.code" style="width:250px"/>
+        </el-form-item>
+        <el-form-item label="角色描述" prop="remark" >
+          <el-input v-model="role.remark" style="width:250px" />
+        </el-form-item>
+      </el-form>
+      <div class="zl-button">
+        <el-button type="warning" size="small" @click="handleReset()">取 消</el-button>
+        <el-button v-loading.fullscreen.lock="fullscreenLoading" type="success" size="small" @click="saveOrUpdate()">确 定</el-button>
+      </div>
+    </el-card>
+
   </div>
 </template>
 
@@ -25,43 +34,45 @@
 import roleApi from '@/api/acl/role'
 
 const defaultForm = {
-  roleName: ''
+  name: null,
+  code: 0,
+  remark: null
 }
 
 export default {
   data() {
     return {
-      role: defaultForm,
+      role: Object.assign({}, defaultForm),
       saveBtnDisabled: false, // 保存按钮是否禁用,
       validateRules: {
-        roleName: [
+        name: [
           { required: true, trigger: 'blur', message: '角色名必须输入' }
         ]
-      }
+      },
+      fullscreenLoading: false,
+      isEdit: false
     }
   },
 
   // 监听器
   watch: {
     $route(to, from) {
-      console.log('路由变化......')
-      console.log(to)
-      console.log(from)
       this.init()
     }
   },
 
   // 生命周期方法（在路由切换，组件不变的情况下不会被调用）
   created() {
-    console.log('form created ......')
     this.init()
   },
 
   methods: {
     // 表单初始化
     init() {
-      debugger
+      console.log(this.$route.params)
       if (this.$route.params && this.$route.params.id) {
+        debugger
+        this.isEdit = true
         const id = this.$route.params.id
         this.fetchDataById(id)
       } else {
@@ -114,10 +125,19 @@ export default {
     // 根据id查询记录
     fetchDataById(id) {
       roleApi.getById(id).then(response => {
-        debugger
-        this.role = response.data.item
+        this.role = response.data.role
       })
+    },
+    handleReset() {
+      this.$router.push({ path: '/acl/role/list' })
     }
   }
 }
 </script>
+<style  scoped>
+	.zl-button {
+		display: flex;
+		justify-content: center;
+		align-items: center;
+	}
+</style>

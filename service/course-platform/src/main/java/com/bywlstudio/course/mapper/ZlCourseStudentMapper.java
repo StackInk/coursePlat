@@ -1,6 +1,6 @@
 package com.bywlstudio.course.mapper;
 
-import com.bywlstudio.course.entity.ZlStudentTeacher;
+import com.bywlstudio.course.entity.ZlCourseStudent;
 import com.baomidou.mybatisplus.core.mapper.BaseMapper;
 
 /**
@@ -11,6 +11,6 @@ import com.baomidou.mybatisplus.core.mapper.BaseMapper;
  * @author StackInk
  * @since 2021-04-08
  */
-public interface ZlStudentTeacherMapper extends BaseMapper<ZlStudentTeacher> {
+public interface ZlCourseStudentMapper extends BaseMapper<ZlCourseStudent> {
 
 }
