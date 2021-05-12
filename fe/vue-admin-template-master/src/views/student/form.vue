@@ -18,7 +18,7 @@
             <el-option
               v-for="item in users"
               :key="item.id"
-              :label="item.name"
+              :label="item.username"
               :value="item.id"/>
           </el-select>
         </el-form-item>
@@ -40,6 +40,7 @@
 
 <script>
 import student from '@/api/student/student'
+import user from '@/api/acl/user'
 
 const defaultStudent = {
   name: null,
@@ -51,7 +52,7 @@ export default {
   data() {
     return {
       isEdit: false,
-      course: Object.assign({}, defaultStudent),
+      student: Object.assign({}, defaultStudent),
       users: [],
       fullscreenLoading: false
     }
@@ -66,10 +67,14 @@ export default {
   },
   methods: {
     init() {
+      const num = 3
       if (this.$route.params && this.$route.params.id) {
         this.isEdit = true
         this.handleStudentById(this.$route.params.id)
       }
+      user.getUserByRoleId(num).then(response => {
+        this.users = response.data.users
+      })
     },
     handleStudentById() {
       student.getStudentById(this.$route.params.id).then(response => {

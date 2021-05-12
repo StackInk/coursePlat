@@ -33,4 +33,6 @@ public interface IAclUserService extends IService<AclUser> {
 
 
     void deleteUsers(List<Long> userIds);
+
+    List<AclUser> getUserByRoleId(Long id);
 }

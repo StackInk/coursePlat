@@ -3,7 +3,7 @@
     <el-checkbox :indeterminate="isIndeterminate" v-model="checkAll" @change="handleCheckAllChange">全选</el-checkbox>
     <div style="margin: 15px 0;"/>
     <el-checkbox-group v-model="checkedCities" @change="handleCheckedCitiesChange">
-      <el-checkbox v-for="city in cities" :label="city.id" :key="city.id">{{ city.roleName }}</el-checkbox>
+      <el-checkbox v-for="city in cities" :label="city.id" :key="city.id">{{ city.name }}</el-checkbox>
     </el-checkbox-group>
     <br>
     <el-button :disabled="saveBtnDisabled" type="primary" @click="update">保存</el-button>
@@ -40,6 +40,7 @@ export default {
     },
     getById(userId) {
       userApi.getAssign(userId).then(response => {
+        console.log(response)
         var jsonObj = response.data.assignRoles
         this.checkedCities = this.getJsonToList(jsonObj, 'id')
         this.cities = response.data.allRolesList

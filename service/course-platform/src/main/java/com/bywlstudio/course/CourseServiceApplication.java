@@ -5,6 +5,7 @@ import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
 import org.springframework.cloud.client.discovery.EnableDiscoveryClient;
 import org.springframework.context.annotation.ComponentScan;
+import org.springframework.scheduling.annotation.EnableAsync;
 
 /**
  * @Author: zl
@@ -15,6 +16,7 @@ import org.springframework.context.annotation.ComponentScan;
 @EnableDiscoveryClient
 @ComponentScan("com.bywlstudio")
 @MapperScan(basePackages = "com.bywlstudio.course.mapper")
+@EnableAsync
 public class CourseServiceApplication {
     public static void main(String[] args) {
             SpringApplication.run(CourseServiceApplication.class, args);

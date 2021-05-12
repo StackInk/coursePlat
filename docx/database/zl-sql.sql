@@ -96,6 +96,7 @@ CREATE TABLE `zl_course` (
     `stock` int UNSIGNED NOT NULL DEFAULT 0 COMMENT '课程库存',
     `start_time` datetime NOT NULL COMMENT '课程开始时间',
     `time` varchar(20) NOT NULL DEFAULT '' COMMENT '上课时间',
+    `is_select` tinyint(1) UNSIGNED NOT NULL DEFAULT 0 COMMENT '是否参与选课(0->不参与,1->参与选课)',
     `is_deleted` tinyint(1) unsigned NOT NULL DEFAULT 0 COMMENT '逻辑删除 1（true）已删除， 0（false）未删除',
     `gmt_create` datetime NOT NULL COMMENT '创建时间',
     `gmt_modified` datetime NOT NULL COMMENT '更新时间',
@@ -139,3 +140,4 @@ CREATE TABLE `zl_student_teacher` (
     `gmt_modified` datetime NOT NULL COMMENT '更新时间',
     PRIMARY KEY (`id`)
 )ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COMMENT='学生，课程关系表';
+

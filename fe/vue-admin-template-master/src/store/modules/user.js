@@ -3,6 +3,7 @@ import { getToken, setToken, removeToken } from '@/utils/auth'
 
 const user = {
   state: {
+    userId: 0,
     token: getToken(),
     name: '',
     avatar: '',
@@ -25,6 +26,9 @@ const user = {
     },
     SET_ROLES: (state, roles) => {
       state.roles = roles
+    },
+    SET_USERID: (state, userId) => {
+      state.userId = userId
     }
   },
 
@@ -61,7 +65,7 @@ const user = {
           data.permissionValueList.forEach(button => {
             buttonAuthList.push(button)
           })
-
+          commit('SET_USERID', data.id)
           commit('SET_NAME', data.name)
           commit('SET_AVATAR', data.avatar)
           commit('SET_BUTTONS', buttonAuthList)

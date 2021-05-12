@@ -114,6 +114,7 @@
 import course from '@/api/course/course'
 import teacher from '@/api/teacher/teacher'
 export default {
+  name: 'TeacherList',
   filters: {
     handleRank(rank) {
       if (rank === 1) {
@@ -181,7 +182,7 @@ export default {
     },
     // 处理添加请求
     handleAdd() {
-      this.$router.push({ path: '/student/create' })
+      this.$router.push({ path: '/teacher/create' })
     },
     handleCourse(teacherId) {
       this.dialogFormVisibleTeacher = true

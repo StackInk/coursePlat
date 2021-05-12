@@ -25,6 +25,7 @@ import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import java.io.IOException;
 import java.util.ArrayList;
+import java.util.concurrent.TimeUnit;
 
 /**
  * @Author: zl
@@ -77,7 +78,7 @@ public class TokenLoginFilter extends UsernamePasswordAuthenticationFilter {
     protected void successfulAuthentication(HttpServletRequest request, HttpServletResponse response, FilterChain chain, Authentication authResult) throws IOException, ServletException {
         SecurityUser user = (SecurityUser)authResult.getPrincipal();
         String token = JwtUtil.getJwtToken(user.getUser().getUsername());
-        redisTemplate.opsForValue().set(user.getUser().getUsername(),user.getPermissionValueList());
+        redisTemplate.opsForValue().set(user.getUser().getUsername(),user.getPermissionValueList(),6, TimeUnit.HOURS);
         ResponseUtil.out(response, R.ok().data("token",token));
     }
 

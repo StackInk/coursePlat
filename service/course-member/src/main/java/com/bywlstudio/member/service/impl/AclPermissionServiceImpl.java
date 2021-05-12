@@ -58,10 +58,21 @@ public class AclPermissionServiceImpl extends ServiceImpl<AclPermissionMapper, A
      */
     @Override
     public List<AclPermission> getPermissionByRoleId(Long id) {
-        List<AclRolePermission> list = rolePermissionService.list(new QueryWrapper<AclRolePermission>().eq("role_id", id).select("permission_id"));
-        List<Long> permissionIds = list.stream().map(AclRolePermission::getPermissionId).collect(Collectors.toList());
-        log.info("当前角色Id:{},拥有的权限ID为：{}",id,permissionIds);
-        return PermissionUtils.build(baseMapper.selectBatchIds(permissionIds));
+        List<AclPermission> allPermissionList = baseMapper.selectList(new QueryWrapper<AclPermission>().orderByAsc("CAST(id AS SIGNED)"));
+
+        //根据角色id获取角色权限
+        List<AclRolePermission> rolePermissionList = rolePermissionService.list(new QueryWrapper<AclRolePermission>().eq("role_id",id));
+        //转换给角色id与角色权限对应Map对象
+        List<Long> permissionIdList = rolePermissionList.stream().map(AclRolePermission::getPermissionId).collect(Collectors.toList());
+        allPermissionList.forEach(permission -> {
+            if(permissionIdList.contains(permission.getId())) {
+                permission.setSelect(true);
+            } else {
+                permission.setSelect(false);
+            }
+        });
+        log.info("当前角色Id:{},拥有的权限ID为：{}",id,permissionIdList);
+        return PermissionUtils.build(allPermissionList);
     }
 
     /**
@@ -173,7 +184,8 @@ public class AclPermissionServiceImpl extends ServiceImpl<AclPermissionMapper, A
 
     private List<AclPermission> getNumPermission(Long userId) {
         //获取所有的角色信息
-        List<AclRole> roleList = roleService.getRolesByUserId(userId);
+
+        List<AclRole> roleList = roleService.getRoleByUserId(userId);
         List<AclPermission> list = new ArrayList<>();
         roleList.forEach(role->{
             List<AclPermission> permissions = baseMapper.getPermissionByRoleId(role.getId());
@@ -236,7 +248,7 @@ public class AclPermissionServiceImpl extends ServiceImpl<AclPermissionMapper, A
     }
 
     private List<String> getNumPermissionValue(Long userId) {
-        List<AclRole> roleList = roleService.getRolesByUserId(userId);
+        List<AclRole> roleList = roleService.getRoleByUserId(userId);
         List<Long> roleIds = roleList.stream().map(AclRole::getId).collect(Collectors.toList());
         List<String> list = new ArrayList<>();
         roleIds.forEach(roleId->{

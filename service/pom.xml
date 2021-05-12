@@ -12,11 +12,10 @@
     <artifactId>service</artifactId>
     <packaging>pom</packaging>
     <modules>
-        <module>course-interface</module>
-        <module>course-cache</module>
         <module>course-oss</module>
         <module>course-member</module>
         <module>course-platform</module>
+        <module>course-rabbit</module>
     </modules>
 
     <dependencies>

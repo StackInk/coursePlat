@@ -57,6 +57,9 @@ public class ZlCourse implements Serializable {
     @ApiModelProperty(value = "上课时间")
     private String time;
 
+    @ApiModelProperty(value = "当前课程是否参加选课(0->不参加,1->参加)")
+    private Integer isSelect;
+
     @ApiModelProperty(value = "逻辑删除 1（true）已删除， 0（false）未删除")
     @TableLogic
     @JsonIgnore

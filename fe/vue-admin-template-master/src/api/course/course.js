@@ -52,5 +52,32 @@ export default {
       url: `${api_name}/teacher/${studentId}`,
       method: 'get'
     })
+  },
+  judgeTime() {
+    return request({
+      url: `${api_name}/judgeTime`,
+      method: 'get'
+    })
+  },
+  selectCourse(courseId, userId) {
+    return request({
+      url: `${api_name}/select`,
+      method: 'post',
+      params: { courseId, userId }
+    })
+  },
+  addSelectCourse(courseIds, times) {
+    return request({
+      url: `${api_name}/select/add`,
+      method: 'post',
+      params: { courseIds, times }
+    })
+  },
+  getPageListBySelect(page, limit, searchObj) {
+    return request({
+      url: `${api_name}/select/${page}/${limit}`,
+      method: 'get',
+      params: searchObj
+    })
   }
 }

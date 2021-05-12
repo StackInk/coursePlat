@@ -5,6 +5,9 @@ import com.bywlstudio.course.entity.ZlCourse;
 import com.baomidou.mybatisplus.extension.service.IService;
 import com.bywlstudio.course.vo.CourseVo;
 
+import java.time.LocalDateTime;
+import java.util.Map;
+
 /**
  * <p>
  * 课程表 服务类
@@ -43,4 +46,12 @@ public interface IZlCourseService extends IService<ZlCourse> {
     void updateCourse(CourseVo courseVo);
 
     IPage<CourseVo> getPageListByName(Long page, Long limit, String name);
+
+    Map<String,Object> judgeTime();
+
+    Map<String,Object> selectCourse(Long courseId, Long userId);
+
+    boolean addSelectCourse(Long[] courseIds, Long[] times);
+
+    IPage<CourseVo> getPageListBySelect(Long page, Long limit, CourseVo courseVo);
 }

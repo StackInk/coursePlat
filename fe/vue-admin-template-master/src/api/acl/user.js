@@ -39,11 +39,11 @@ export default {
       method: 'get'
     })
   },
-  saveAssign(userId, roleId) {
+  saveAssign(userId, roleIds) {
     return request({
       url: `${api_name}/role`,
       method: 'post',
-      params: { userId, roleId }
+      params: { userId, roleIds }
     })
   },
   removeById(id) {
@@ -57,6 +57,12 @@ export default {
       url: `${api_name}/batchRemove`,
       method: 'delete',
       data: idList
+    })
+  },
+  getUserByRoleId(roleId) {
+    return request({
+      url: `${api_name}/roleUser?roleId=${roleId}`,
+      method: 'get'
     })
   }
 }

@@ -51,7 +51,7 @@
       <el-table-column label="操作" width="230" align="center">
         <template slot-scope="scope">
           <router-link :to="'/acl/user/role/'+scope.row.id">
-            <el-button v-if="hasPerm('user.assgin')" type="info" size="mini" icon="el-icon-info"/>
+            <el-button v-if="hasPerm('user.assign')" type="info" size="mini" icon="el-icon-info"/>
           </router-link>
           <router-link :to="'/acl/user/update/'+scope.row.id">
             <el-button v-if="hasPerm('user.update')" type="primary" size="mini" icon="el-icon-edit"/>

@@ -69,7 +69,7 @@ public class TokenWebSecurityConfig extends WebSecurityConfigurerAdapter {
                     .anyRequest().authenticated()
                 .and()
                     .logout().logoutUrl("/user/logout")
-                    .addLogoutHandler(new TokenLogoutHandler())
+                    .addLogoutHandler(new TokenLogoutHandler(redisTemplate))
                 .and()
                     .addFilter(new TokenLoginFilter(authenticationManager(),redisTemplate))
                     .addFilter(new TokenAuthenticationFilter(authenticationManager(),redisTemplate))

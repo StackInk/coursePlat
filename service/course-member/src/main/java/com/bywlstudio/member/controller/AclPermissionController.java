@@ -55,7 +55,7 @@ public class AclPermissionController {
     @ApiOperation("根据角色Id获取菜单信息")
     public R getPermissionByRoleId(@PathVariable Long roleId) {
         List<AclPermission> permissionList = permissionService.getPermissionByRoleId(roleId);
-        return R.ok().data("children",permissionList);
+        return R.ok().data("children",permissionList).message("获取菜单信息成功");
     }
 
     @PostMapping
@@ -71,8 +71,5 @@ public class AclPermissionController {
         permissionService.updateById(permission);
         return R.ok().message("菜单更新成功");
     }
-
-
-
 }
 

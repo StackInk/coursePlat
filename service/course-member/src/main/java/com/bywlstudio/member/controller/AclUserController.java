@@ -126,8 +126,8 @@ public class AclUserController {
     @GetMapping("/role/{id}")
     @ApiOperation("根据用户获取角色数据")
     public R getRoleDataByUserId(@PathVariable Long id) {
-        List<AclRole> roleList = roleService.getRolesByUserId(id);
-        return R.ok().data("roleList",roleList);
+        Map<String,Object> roleList = roleService.getRolesByUserId(id);
+        return R.ok().data(roleList);
     }
 
     @PostMapping("/role")
@@ -137,6 +137,13 @@ public class AclUserController {
         return R.ok();
     }
 
+
+    @GetMapping("/roleUser")
+    @ApiOperation("根据角色ID获取User信息")
+    public R getUserByRoleId(@RequestParam("roleId") Long id){
+        List<AclUser> userByRoleId = userService.getUserByRoleId(id);
+        return R.ok().data("users",userByRoleId).message("获取用户信息成功");
+    }
 
 
 

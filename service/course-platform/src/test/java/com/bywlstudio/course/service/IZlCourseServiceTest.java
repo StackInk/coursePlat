@@ -1,17 +1,18 @@
 package com.bywlstudio.course.service;
 
+import com.bywlstudio.common.constant.Constant;
 import com.bywlstudio.course.CourseServiceApplication;
 import com.bywlstudio.course.entity.ZlCourse;
+import com.bywlstudio.course.utils.DateTimeUtils;
 import org.junit.jupiter.api.Test;
 import org.springframework.boot.test.context.SpringBootTest;
+import org.springframework.data.redis.core.RedisTemplate;
 
 import javax.annotation.Resource;
 
 import java.time.Instant;
 import java.time.LocalDateTime;
-import java.util.ArrayList;
-import java.util.Date;
-import java.util.List;
+import java.util.*;
 
 import static org.junit.jupiter.api.Assertions.*;
 
@@ -25,6 +26,9 @@ class IZlCourseServiceTest {
 
     @Resource
     private IZlCourseService courseService;
+
+    @Resource
+    private RedisTemplate<String,Object> redisTemplate;
 
     @Test
     public void insertCourse() {
@@ -52,5 +56,36 @@ class IZlCourseServiceTest {
         courses.add(course6);
         courseService.saveBatch(courses);
     }
+
+    @Test
+    public void test01(){
+        Set<Object> members = redisTemplate.opsForSet().members(Constant.courseStart);
+//        redisTemplate.opsForSet().add(Constant.courseStart,ss);
+//        Set<Object> members = redisTemplate.opsForSet().members(Constant.courseStart);
+        System.out.println(members.size());
+        System.out.println(members);
+        members.forEach(o->{
+            System.out.println(o);
+            long s1 = (Long)o;
+            System.out.println(s1);
+        });
+        Long[] longs = new Long[2];
+        members.toArray(longs);
+        System.out.println(Arrays.toString(longs));
+    }
+
+
+    /**
+     * 测试选课任务
+     */
+    @Test
+    public void test02() {
+        Map<String, Object> stringObjectMap = courseService.selectCourse(1L, 1L);
+        System.out.println(stringObjectMap);
+    }
+
+
+
+
 
 }

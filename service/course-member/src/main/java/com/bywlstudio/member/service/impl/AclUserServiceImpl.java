@@ -22,6 +22,7 @@ import javax.annotation.Resource;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
+import java.util.concurrent.TimeUnit;
 import java.util.stream.Collectors;
 
 /**
@@ -75,13 +76,13 @@ public class AclUserServiceImpl extends ServiceImpl<AclUserMapper, AclUser> impl
     public Map<String, Object> getUserInfo(String username) {
         AclUser aclUser = this.getUserByUsername(username);
         //获取当前用户所有的角色信息
-        List<AclRole> roles = roleService.getRolesByUserId(aclUser.getId());
+        List<AclRole> roles = roleService.getRoleByUserId(aclUser.getId());
 
         //获取当前用户所有的权限信息
         List<String> permissions = permissionService.getPermissionValueByUserId(aclUser.getId());
 
         //权限信息
-        redisTemplate.opsForValue().set(aclUser.getId().toString(),permissions);
+        redisTemplate.opsForValue().set(aclUser.getId().toString(),permissions,6, TimeUnit.HOURS);
 
         Map<String,Object> map = new HashMap<>();
         map.put("id",aclUser.getId());
@@ -132,8 +133,13 @@ public class AclUserServiceImpl extends ServiceImpl<AclUserMapper, AclUser> impl
 
     @Override
     public void deleteUsers(List<Long> userIds) {
-        userIds.forEach(userId->{
-            this.deleteUser(userId);
-        });
+        userIds.forEach(this::deleteUser);
+    }
+
+    @Override
+    public List<AclUser> getUserByRoleId(Long id) {
+        List<AclUserRole> userRoles = userRoleService.list(new QueryWrapper<AclUserRole>().eq("role_id", id).select("user_id"));
+        List<Long> userList = userRoles.stream().map(AclUserRole::getUserId).collect(Collectors.toList());
+        return this.list(new QueryWrapper<AclUser>().in("id",userList).select("username","id"));
     }
 }

@@ -1,0 +1,47 @@
+server:
+  port: 8004
+  servlet:
+    context-path: /rabbitservice
+  tomcat:
+    uri-encoding: UTF-8
+spring:
+  application:
+    name: SERVICE-RABBIT
+  profiles:
+    active: dev
+  datasource:
+    driver-class-name: com.mysql.cj.jdbc.Driver
+    url: jdbc:mysql://39.97.189.37:3306/courseplatform?serverTimezone=GMT%2B8
+    username: root
+    password: '123456'
+  jackson:
+    date-format: yyyy-MM-dd HH:mm:ss
+    time-zone: GMT+8
+  redis:
+    port: 6379
+    host: 127.0.0.1
+  #    host: 39.97.189.37
+#    password: bywlstudio6379
+  cloud:
+    nacos:
+      discovery:
+        server-addr: 39.97.189.37:8848
+  http:
+    encoding:
+      charset: UTF-8
+      enabled: true
+      force: true
+  rabbitmq:
+    host: amqp-cn-7pp2662qb00m.mq-amqp.cn-beijing-327844-a.aliyuncs.com
+    username: LTAI5tD9KkC5bjoW9mgXsWPw
+    password: eq2ZCGUEGdfndFjTIZkkkrdIkPRHvs
+    virtual-host: zl-course
+
+mybatis-plus:
+  configuration:
+    log-impl:  org.apache.ibatis.logging.stdout.StdOutImpl
+#  mapper-locations: classpath:com/bywlstudio/course/mapper/xml/*.xml
+
+logging:
+  level:
+    root: info

@@ -3,6 +3,7 @@ package com.bywlstudio.security.security;
 import com.bywlstudio.common.util.JwtUtil;
 import com.bywlstudio.common.util.R;
 import com.bywlstudio.common.util.ResponseUtil;
+import jdk.nashorn.internal.parser.Token;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.data.redis.core.RedisTemplate;
 import org.springframework.security.core.Authentication;
@@ -19,13 +20,15 @@ import javax.servlet.http.HttpServletResponse;
  * @Date: Create in 2021/4/9 16:30
  * @Description:
  */
-@Component
 @Slf4j
 public class TokenLogoutHandler implements LogoutHandler {
 
+    private RedisTemplate<String,Object> redisTemplate;
 
-    @Resource
-    private RedisTemplate<String,String> redisTemplate;
+
+    public TokenLogoutHandler(RedisTemplate<String,Object> redisTemplate) {
+        this.redisTemplate = redisTemplate;
+    }
 
     /**
      * 从 Redis 中移除用户信息，将Token移除(服务端无法处理，客户端移除token)
@@ -35,7 +38,7 @@ public class TokenLogoutHandler implements LogoutHandler {
      */
     @Override
     public void logout(HttpServletRequest httpServletRequest, HttpServletResponse httpServletResponse, Authentication authentication) {
-        String userId = JwtUtil.getMemberIdByJwtToken(httpServletRequest.getHeader("token"));
+        String userId = JwtUtil.getMemberIdByJwtToken(httpServletRequest.getHeader("X-Token"));
         redisTemplate.unlink(userId);
         log.info("{}用户注销成功",userId);
         ResponseUtil.out(httpServletResponse, R.ok().data("message","注销成功"));

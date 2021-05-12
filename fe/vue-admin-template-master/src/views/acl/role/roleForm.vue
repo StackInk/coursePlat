@@ -8,7 +8,10 @@
       default-expand-all
       node-key="id"
       highlight-current/>
-    <el-button :disabled="saveBtnDisabled" type="primary" @click="save">保存</el-button>
+    <div class="zl-button">
+      <el-button type="warning" size="small" @click="handleReset()">返回</el-button>
+      <el-button :disabled="saveBtnDisabled" type="primary" size="small" @click="save">保存</el-button>
+    </div>
   </div>
 </template>
 <script>
@@ -89,6 +92,7 @@ export default {
       // vue elementUI tree树形控件获取父节点ID的实例
       // node_modules\element-ui\lib\element-ui.common.js
       // 25348行修改源码
+      console.log(ids)
       menu.doAssign(this.roleId, ids).then(response => {
         if (response.success) {
           this.$message({
@@ -97,8 +101,24 @@ export default {
           })
           this.$router.push({ path: '/acl/role/list' })
         }
+      }).catch(error => {
+        this.saveBtnDisabled = false
+        this.$message({
+          type: 'error',
+          message: error.message
+        })
       })
+    },
+    handleReset() {
+      this.$router.push({ path: '/acl/role/list' })
     }
   }
 }
 </script>
+<style  scoped>
+	.zl-button {
+		display: flex;
+		justify-content: center;
+		align-items: center;
+	}
+</style>

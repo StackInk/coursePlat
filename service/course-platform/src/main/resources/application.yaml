@@ -25,11 +25,28 @@ spring:
     nacos:
       discovery:
         server-addr: 39.97.189.37:8848
+    sentinel:
+      transport:
+        dashboard: 39.97.189.37:8080
+        port: 8719
+      datasource:
+        ds1:
+          nacos:
+            server-addr: 39.97.189.37:8848
+            dataId: sentinel-course
+            groupId: DEFAULT_GROUP
+            data-type: json
+            rule-type: flow
   http:
     encoding:
       charset: UTF-8
       enabled: true
       force: true
+  rabbitmq:
+    host: amqp-cn-7pp2662qb00m.mq-amqp.cn-beijing-327844-a.aliyuncs.com
+    username: LTAI5tD9KkC5bjoW9mgXsWPw
+    password: eq2ZCGUEGdfndFjTIZkkkrdIkPRHvs
+    virtual-host: zl-course
 
 mybatis-plus:
   configuration:
@@ -38,3 +55,11 @@ mybatis-plus:
 logging:
   level:
     root: info
+
+management:
+  endpoints:
+    web:
+      exposure:
+        include: '*'
+
+

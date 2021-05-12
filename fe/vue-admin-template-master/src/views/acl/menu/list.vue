@@ -117,11 +117,11 @@ const menuForm = {
   pid: 0,
   path: '',
   component: '',
-  type: '1'
+  type: 1
 }
 const perForm = {
   permissionValue: '',
-  type: '2',
+  type: 2,
   name: '',
   path: '',
   component: '',
@@ -141,8 +141,8 @@ export default {
       dialogFormValue: '添加菜单',
       dialogFormVisible: false,
       dialogPermissionVisible: false,
-      menu: menuForm,
-      permission: perForm,
+      menu: Object.assign({}, menuForm),
+      permission: Object.assign({}, perForm),
       menuValidateRules: {
         name: [{ required: true, trigger: 'blur', message: '菜单名必须输入' }],
         path: [{ required: true, trigger: 'blur', message: '菜单路径必须输入' }],
@@ -270,7 +270,6 @@ export default {
     },
 
     update(obj) {
-      debugger
       menu.update(obj).then(response => {
         this.dialogFormVisible = false
         this.$message({

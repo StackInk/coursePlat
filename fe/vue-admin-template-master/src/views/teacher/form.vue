@@ -12,6 +12,16 @@
         <el-form-item label="名称：">
           <el-input v-model="teacher.name" style="width: 250px"/>
         </el-form-item>
+        <el-form-item label="绑定账户">
+          <!-- TODO 下拉框 -->
+          <el-select v-model="teacher.uid" placeholder="请选择" style="width: 250px">
+            <el-option
+              v-for="item in users"
+              :key="item.id"
+              :label="item.username"
+              :value="item.id"/>
+          </el-select>
+        </el-form-item>
         <el-form-item label="教师经历：">
           <el-input
             v-model="teacher.description"
@@ -41,6 +51,7 @@
 
 <script>
 import teacher from '@/api/teacher/teacher'
+import user from '@/api/acl/user'
 
 const defaultTeacher = {
   name: null,
@@ -60,7 +71,8 @@ export default {
       isEdit: false,
       teacher: Object.assign({}, defaultTeacher),
       rankData: Object.assign([], defalutRank),
-      fullscreenLoading: false
+      fullscreenLoading: false,
+      users: {}
     }
   },
   watch: {
@@ -73,10 +85,14 @@ export default {
   },
   methods: {
     init() {
+      const num = 2
       if (this.$route.params && this.$route.params.id) {
         this.isEdit = true
         this.handleTeacherById(this.$route.params.id)
       }
+      user.getUserByRoleId(num).then(response => {
+        this.users = response.data.users
+      })
     },
     handleTeacherById() {
       teacher.getTeacherById(this.$route.params.id).then(response => {
@@ -94,6 +110,7 @@ export default {
       this.fullscreenLoading = true
       teacher.updateTeacher(this.teacher).then(response => {
         this.fullscreenLoading = false
+        this.$router.push({ path: '/teacher/list' })
       }).catch(response => {
         this.fullscreenLoading = false
       })
@@ -102,6 +119,9 @@ export default {
       this.fullscreenLoading = true
       teacher.saveTeacher(this.teacher).then(response => {
         this.fullscreenLoading = false
+        this.teacher = response.data.item
+        this.total = response.data.total
+        this.$router.push({ path: '/teacher/list' })
       }).catch(response => {
         this.fullscreenLoading = false
       })

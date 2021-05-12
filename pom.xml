@@ -47,12 +47,44 @@
         <redis.version>2.3.9.RELEASE</redis.version>
         <druid.version>1.1.9</druid.version>
         <letture.version>5.3.7.RELEASE</letture.version>
+        <redission.version>3.15.4</redission.version>
+        <aliyun-mq.version>1.0.5</aliyun-mq.version>
     </properties>
 
 
     <dependencyManagement>
         <dependencies>
+            <dependency>
+                <groupId>org.springframework.boot</groupId>
+                <artifactId>spring-boot-starter-actuator</artifactId>
+                <version>${spring-boot.version}</version>
+            </dependency>
+            <dependency>
+                <groupId>org.springframework.boot</groupId>
+                <artifactId>spring-boot-starter-amqp</artifactId>
+                <version>${spring-boot.version}</version>
+            </dependency>
+            <dependency>
+                <groupId>org.redisson</groupId>
+                <artifactId>redisson-spring-data-23</artifactId>
+                <version>${redission.version}</version>
+            </dependency>
+            <dependency>
+                <groupId>com.alibaba.mq-amqp</groupId>
+                <artifactId>mq-amqp-client</artifactId>
+                <version>${aliyun-mq.version}</version>
+            </dependency>
             <!--Spring Cloud-->
+            <dependency>
+                <groupId>com.alibaba.cloud</groupId>
+                <artifactId>spring-cloud-starter-alibaba-sentinel</artifactId>
+                <version>2.1.0.RELEASE</version>
+            </dependency>
+            <dependency>
+                <groupId>com.alibaba.csp</groupId>
+                <artifactId>sentinel-datasource-nacos</artifactId>
+                <version>1.6.3</version>
+            </dependency>
             <dependency>
                 <groupId>org.springframework.cloud</groupId>
                 <artifactId>spring-cloud-dependencies</artifactId>
@@ -72,6 +104,12 @@
                 <artifactId>spring-boot-devtools</artifactId>
                 <scope>runtime</scope>
                 <optional>true</optional>
+                <version>${spring-boot.version}</version>
+            </dependency>
+
+            <dependency>
+                <groupId>org.springframework.boot</groupId>
+                <artifactId>spring-boot-starter-aop</artifactId>
                 <version>${spring-boot.version}</version>
             </dependency>
 

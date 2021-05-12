@@ -12,11 +12,28 @@
     <artifactId>course-common</artifactId>
 
     <dependencies>
+
+        <dependency>
+            <groupId>org.springframework.boot</groupId>
+            <artifactId>spring-boot-starter-amqp</artifactId>
+        </dependency>
+        <dependency>
+            <groupId>org.springframework.boot</groupId>
+            <artifactId>spring-boot-starter-actuator</artifactId>
+        </dependency>
+        <dependency>
+            <groupId>com.alibaba.mq-amqp</groupId>
+            <artifactId>mq-amqp-client</artifactId>
+        </dependency>
         <!-- JWT-->
         <dependency>
             <groupId>io.jsonwebtoken</groupId>
             <artifactId>jjwt</artifactId>
             <scope>provided</scope>
+        </dependency>
+        <dependency>
+            <groupId>org.redisson</groupId>
+            <artifactId>redisson-spring-data-23</artifactId>
         </dependency>
 
         <dependency>

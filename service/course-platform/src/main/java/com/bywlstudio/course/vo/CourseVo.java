@@ -29,23 +29,18 @@ public class CourseVo implements Serializable {
     private Long id;
 
     @ApiModelProperty(value = "课程名称")
-    @NotNull
     private String name;
 
     @ApiModelProperty(value = "课程类型(0->智慧树,1->慕课,2->线下)")
-    @NotNull
     private Integer type;
 
     @ApiModelProperty(value = "课程上课地址")
-    @NotNull
     private String place;
 
     @ApiModelProperty(value = "课程库存")
-    @NotNull
     private Integer stock;
 
     @ApiModelProperty(value = "开始上课时间")
-    @NotNull
     private Date startTime;
 
     @ApiModelProperty(value = "上课时间")

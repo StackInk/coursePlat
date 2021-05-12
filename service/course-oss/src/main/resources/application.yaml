@@ -1,7 +1,7 @@
 aliyun:
   oss:
-    accessKey: LTAI4GGpaNKgzaBmrpsJiLEN
-    accessKeySecret: Pged7WnzYpRSCVE3XRafmnjzBdbljA
+    accessKey: #
+    accessKeySecret: #
     endpoint: oss-cn-beijing.aliyuncs.com
     bucketName: 'edu-stream001'
 

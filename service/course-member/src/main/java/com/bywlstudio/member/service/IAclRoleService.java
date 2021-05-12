@@ -4,6 +4,7 @@ import com.bywlstudio.member.entity.AclRole;
 import com.baomidou.mybatisplus.extension.service.IService;
 
 import java.util.List;
+import java.util.Map;
 
 /**
  * <p>
@@ -20,7 +21,9 @@ public interface IAclRoleService extends IService<AclRole> {
      * @param id
      * @return
      */
-    List<AclRole> getRolesByUserId(Long id);
+    Map<String,Object> getRolesByUserId(Long id);
+
+    List<AclRole> getRoleByUserId(Long id);
 
     /**
      * 根据用户Id分配角色
