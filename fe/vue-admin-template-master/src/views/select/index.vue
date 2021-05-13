@@ -208,7 +208,10 @@ export default {
   handleSelectCourse(courseId) {
     const userId = this.$store.userId
     course.selectCourse(courseId, userId).then(response => {
-
+      this.$message({
+        type: 'success',
+        message: '选课成功'
+      })
     })
   }
 }
