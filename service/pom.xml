@@ -12,7 +12,6 @@
     <artifactId>service</artifactId>
     <packaging>pom</packaging>
     <modules>
-        <module>course-oss</module>
         <module>course-member</module>
         <module>course-platform</module>
         <module>course-rabbit</module>
