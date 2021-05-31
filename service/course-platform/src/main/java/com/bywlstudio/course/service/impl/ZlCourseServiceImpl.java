@@ -116,6 +116,7 @@ public class ZlCourseServiceImpl extends ServiceImpl<ZlCourseMapper, ZlCourse> i
         }else{
             map.put("code", CourseCode.COURSE_JUDGE_FAILURE.getCode());
         }
+        log.info("是否可以选课：{}",map.get("code"));
         return map;
     }
 
@@ -254,7 +255,7 @@ public class ZlCourseServiceImpl extends ServiceImpl<ZlCourseMapper, ZlCourse> i
             redisTemplate.expireAt(Constant.courseStart, Instant.ofEpochMilli(times[1]));
             this.startScheduleTask();
         }catch (Exception e){
-            log.info("添加选课异常信息{}",e);
+            log.info("添加选课异常信息{}",e.getMessage());
             return false;
         }
         return true;
@@ -266,14 +267,14 @@ public class ZlCourseServiceImpl extends ServiceImpl<ZlCourseMapper, ZlCourse> i
     @Async
     public void startScheduleTask() {
         List<ZlCourse> courseList = baseMapper.selectList(new QueryWrapper<ZlCourse>().eq("is_select", 1).select("id","stock"));
-        Map<Long,Integer> map = Maps.newHashMap();
+        Map<String,Integer> map = Maps.newHashMap();
         courseList.forEach(course -> {
-            map.put(course.getId(),course.getStock());
+            map.put(course.getId()+"",course.getStock());
         });
         //将数据灌入Redis
         redisTemplate.opsForHash().putAll(Constant.courseSelect,map);
         //设置过期时间，多加一天
-        Instant expireTime = Instant.ofEpochMilli(getSelectCourseTimes()[1] + DateTimeUtils.coverDayToMill());
+        Instant expireTime = Instant.ofEpochMilli(Objects.requireNonNull(getSelectCourseTimes())[1] + DateTimeUtils.coverDayToMill());
         redisTemplate.expireAt(Constant.courseSelect,expireTime);
     }
 

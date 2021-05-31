@@ -158,7 +158,7 @@ export default {
       teacher.getPageList(this.page, this.limit).then(
         response => {
           console.log(response)
-          this.tableData = response.data.items
+          this.tableData = response.data.item
           this.total = response.data.total
 
           // 数据加载并绑定成功
@@ -185,7 +185,7 @@ export default {
       this.$router.push({ path: '/teacher/create' })
     },
     handleCourse(teacherId) {
-      this.dialogFormVisibleTeacher = true
+      this.dialogFormVisible = true
       course.getCourseByTeacherId(teacherId).then(response => {
         this.teacherData = response.data.teachers
       })

@@ -32,7 +32,7 @@ export const constantRoutes = [
     children: [{
       path: 'dashboard',
       component: () => import('@/views/dashboard/index'),
-      meta: { title: '课程管理系统', icon: 'dashboard' }
+      meta: { title: '高并发选课系统', icon: 'dashboard' }
     }]
   }]
 

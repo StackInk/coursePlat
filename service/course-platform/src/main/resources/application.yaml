@@ -22,21 +22,10 @@ spring:
     host: 39.97.189.37
     password: bywlstudio6379
   cloud:
-    nacos:
-      discovery:
-        server-addr: 39.97.189.37:8848
     sentinel:
       transport:
         dashboard: 39.97.189.37:8080
         port: 8719
-      datasource:
-        ds1:
-          nacos:
-            server-addr: 39.97.189.37:8848
-            dataId: sentinel-course
-            groupId: DEFAULT_GROUP
-            data-type: json
-            rule-type: flow
   http:
     encoding:
       charset: UTF-8
@@ -48,9 +37,6 @@ spring:
     password: eq2ZCGUEGdfndFjTIZkkkrdIkPRHvs
     virtual-host: zl-course
 
-mybatis-plus:
-  configuration:
-    log-impl:  org.apache.ibatis.logging.stdout.StdOutImpl
 
 logging:
   level:

@@ -21,6 +21,16 @@
         <dependency>
             <groupId>com.bywlstudio</groupId>
             <artifactId>course-common</artifactId>
+<!--            <exclusions>-->
+<!--                <exclusion>-->
+<!--                    <groupId>org.springframework.boot</groupId>-->
+<!--                    <artifactId>spring-boot-starter-amqp</artifactId>-->
+<!--                </exclusion>-->
+<!--                <exclusion>-->
+<!--                    <groupId>com.alibaba.mq-amqp</groupId>-->
+<!--                    <artifactId>mq-amqp-client</artifactId>-->
+<!--                </exclusion>-->
+<!--            </exclusions>-->
         </dependency>
 
     </dependencies>

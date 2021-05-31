@@ -22,6 +22,7 @@ import javax.annotation.Resource;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
+import java.util.Objects;
 import java.util.concurrent.TimeUnit;
 import java.util.stream.Collectors;
 
@@ -80,6 +81,7 @@ public class AclUserServiceImpl extends ServiceImpl<AclUserMapper, AclUser> impl
 
         //获取当前用户所有的权限信息
         List<String> permissions = permissionService.getPermissionValueByUserId(aclUser.getId());
+        permissions = permissions.stream().filter(Objects::nonNull).collect(Collectors.toList());
 
         //权限信息
         redisTemplate.opsForValue().set(aclUser.getId().toString(),permissions,6, TimeUnit.HOURS);
@@ -106,6 +108,8 @@ public class AclUserServiceImpl extends ServiceImpl<AclUserMapper, AclUser> impl
         List<JSONObject> menus = null;
         if(UserUtils.isAdmin(username)) {
             menus = permissionService.getMenuJackson();
+        }else {
+            menus = permissionService.getMenuByUsername(username);
         }
         return menus;
     }

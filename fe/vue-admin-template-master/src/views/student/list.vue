@@ -153,7 +153,7 @@ export default {
       student.getPageList(this.page, this.limit).then(
         response => {
           console.log(response)
-          this.tableData = response.data.items
+          this.tableData = response.data.item
           this.total = response.data.total
 
           // 数据加载并绑定成功
@@ -180,7 +180,7 @@ export default {
       this.$router.push({ path: '/student/create' })
     },
     handleCourse(studentId) {
-      this.dialogFormVisibleStudent = true
+      this.dialogFormVisible = true
       course.getStudentsByCourseId(studentId).then(response => {
         this.studentData = response.data.students
       })

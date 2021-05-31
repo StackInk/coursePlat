@@ -80,8 +80,7 @@ class IZlCourseServiceTest {
      */
     @Test
     public void test02() {
-        Map<String, Object> stringObjectMap = courseService.selectCourse(1L, 1L);
-        System.out.println(stringObjectMap);
+        System.out.println(courseService.judgeTime());
     }
 
 

@@ -1,5 +1,6 @@
 package com.bywlstudio.member.service;
 
+import com.alibaba.fastjson.JSONObject;
 import com.bywlstudio.member.AclServiceApplication;
 import com.bywlstudio.member.entity.AclUser;
 import org.junit.jupiter.api.Test;
@@ -8,6 +9,7 @@ import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.security.crypto.password.PasswordEncoder;
 
 import javax.annotation.Resource;
+import java.util.List;
 
 /**
  * @Author: zl
@@ -29,6 +31,15 @@ public class UserServiceTest {
         user.setPassword(passwordEncoder.encode("111111"));
         userService.save(user);
     }
+
+
+    @Test
+    public void testPermissionByUsername() {
+        List<JSONObject> stack = userService.getMenuJackson("stack");
+        System.out.println(stack);
+    }
+
+
 
 
 }

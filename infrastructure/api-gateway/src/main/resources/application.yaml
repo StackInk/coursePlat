@@ -8,22 +8,11 @@ spring:
       routes:
        # 用户登陆服务和权限服务
         - id: zl-acl
-          uri: lb://SERVICE-ACL
+          uri: http://localhost:8001
           predicates:
             - Path=/aclservice/**
         # 课程服务
         - id: zl-course
-          uri: lb://SERVICE-COURSE
+          uri: http://localhost:8003
           predicates:
             - Path=/courseservice/**
-        # OSS 服务
-        - id: zl-oss
-          uri: lb://SERVICE-OSS
-          predicates:
-            - Path=/ossservice/**
-      discovery:
-        locator:
-          enabled: true
-    nacos:
-      discovery:
-        server-addr: 39.97.189.37:8848

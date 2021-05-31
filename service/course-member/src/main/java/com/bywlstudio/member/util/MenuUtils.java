@@ -1,6 +1,5 @@
 package com.bywlstudio.member.util;
 
-import com.alibaba.nacos.client.utils.JSONUtils;
 import com.bywlstudio.member.entity.AclPermission;
 import com.google.gson.JsonArray;
 import com.google.gson.JsonObject;
@@ -141,11 +140,6 @@ public class MenuUtils {
                 oneMeun.put("children", children);
                 meuns.add(oneMeun);
             }
-        }
-        try {
-            log.info("菜单信息整理完毕:{}", JSONUtils.serializeObject(meuns));
-        } catch (IOException e) {
-            e.printStackTrace();
         }
         return meuns;
     }

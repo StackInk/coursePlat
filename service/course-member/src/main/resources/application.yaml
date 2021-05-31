@@ -24,16 +24,8 @@ spring:
     host: 39.97.189.37
     password: bywlstudio6379
 
-  cloud:
-    nacos:
-      discovery:
-        server-addr: 39.97.189.37:8848
   http:
     encoding:
       charset: UTF-8
       enabled: true
       force: true
-
-mybatis-plus:
-  configuration:
-    log-impl:  org.apache.ibatis.logging.stdout.StdOutImpl

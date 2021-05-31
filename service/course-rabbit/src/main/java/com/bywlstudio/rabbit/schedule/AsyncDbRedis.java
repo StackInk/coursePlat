@@ -38,8 +38,8 @@ public class AsyncDbRedis {
         List<Map.Entry<Object, Object>> entryList = RedisUtils.scan(redisTemplate, Constant.courseSelect);
         if(entryList.isEmpty()) return;
         entryList.forEach(entry->{
-            Long courseId = (Long)entry.getKey();
-            Integer stock = (Integer)entry.getValue();
+            Long courseId = Long.parseLong((String)entry.getKey());
+            Integer stock = (Integer) entry.getValue();
             courseMapper.updateStockById(courseId,stock);
         });
     }

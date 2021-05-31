@@ -152,7 +152,8 @@ export default {
       limit: 5,
       types: ['success', 'warning', '', 'info', 'error'],
       active: 1,
-      times: {}
+      times: {},
+      total: 0
     }
   },
   computed: {
@@ -195,25 +196,35 @@ export default {
           this.times = time
         }
       })
-    }
-  },
-  // 处理查询请求
-  handleSearchList() {
-    this.fetchData()
-  },
-  handleResetSearch() {
-    this.listQuery.keyword = undefined
-    this.fetchData()
-  },
-  handleSelectCourse(courseId) {
-    const userId = this.$store.userId
-    course.selectCourse(courseId, userId).then(response => {
-      this.$message({
-        type: 'success',
-        message: '选课成功'
+    },
+    // 处理查询请求
+    handleSearchList() {
+      this.fetchData()
+    },
+    handleResetSearch() {
+      this.listQuery.keyword = undefined
+      this.fetchData()
+    },
+    handleSelectCourse(courseId) {
+      const userId = this.userId
+      this.listLoading = true
+      course.selectCourse(courseId.id, userId).then(response => {
+        if (response.data.code === 30002) {
+          this.$message({
+            type: 'success',
+            message: response.message
+          })
+        } else {
+          this.$message({
+            type: 'error',
+            message: response.message
+          })
+        }
+        this.listLoading = false
       })
-    })
+    }
   }
+
 }
 </script>
 

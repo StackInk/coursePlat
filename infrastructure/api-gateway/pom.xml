@@ -13,10 +13,6 @@
     <artifactId>api-gateway</artifactId>
 
     <dependencies>
-        <dependency>
-            <groupId>org.springframework.cloud</groupId>
-            <artifactId>spring-cloud-starter-alibaba-nacos-discovery</artifactId>
-        </dependency>
 
         <dependency>
             <groupId>org.springframework.cloud</groupId>
@@ -37,6 +33,15 @@
                     <groupId>org.springframework.boot</groupId>
                     <artifactId>spring-boot-starter-web</artifactId>
                 </exclusion>
+                <exclusion>
+                    <groupId>org.springframework.boot</groupId>
+                    <artifactId>spring-boot-starter-amqp</artifactId>
+                </exclusion>
+                <exclusion>
+                    <groupId>com.alibaba.mq-amqp</groupId>
+                    <artifactId>mq-amqp-client</artifactId>
+                </exclusion>
+
             </exclusions>
         </dependency>
     </dependencies>

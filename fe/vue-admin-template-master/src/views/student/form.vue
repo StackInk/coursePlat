@@ -92,16 +92,22 @@ export default {
       this.fullscreenLoading = true
       student.updateStudent(this.student).then(response => {
         this.fullscreenLoading = false
+        this.$router.push({ 'path': '/student/list' })
       }).catch(response => {
         this.fullscreenLoading = false
+        this.$router.push({ 'path': '/student/list' })
       })
     },
     saveStudent() {
       this.fullscreenLoading = true
-      student.saveStudent(this.student).then(response => {
+      const newStudent = this.student
+      newStudent.credits = 0
+      student.saveStudent(newStudent).then(response => {
         this.fullscreenLoading = false
+        this.$router.push({ 'path': '/student/list' })
       }).catch(response => {
         this.fullscreenLoading = false
+        this.$router.push({ 'path': '/student/list' })
       })
     },
     handleChange() {
